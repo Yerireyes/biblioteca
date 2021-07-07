@@ -4,6 +4,7 @@
 }
 .navbar{
 background-color:  #292F33;
+color:#fff;
 }
 /* .nav-item{
   font:#fff;
@@ -15,6 +16,6 @@ background-color:  #292F33;
 .card-header{
   background-color:   #66757F;
 }
-/* .container{
-  background-image: url("../imagenes/erik.png");
-} */
+.nav-item{
+  color:#fff;
+}

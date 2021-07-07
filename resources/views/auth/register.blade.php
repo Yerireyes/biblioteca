@@ -1,13 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+<head>
+    <link  href="{{asset('css/registro.css')}}" rel="stylesheet">
+    <link  href="{{asset('css/r.css')}}" rel="stylesheet">
+    
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-purple text-white">{{ __('Register') }}</div>
+                <div class="card-header text-white">{{ __('Register') }}</div>
 
-                <div class="card-body">
+                 <div class="card-body"> {{--todo el formulario de registro --}}
                     <!-- <form method="POST" action="{{ route('register') }}"> -->
                     <!-- <form method="POST" action="{{ route('myreg') }}"> -->
                     <form method="POST" action="/myreg">
