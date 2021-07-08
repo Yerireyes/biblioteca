@@ -85,7 +85,7 @@
 
             <ul class="list-unstyled components">
                 <li>
-                    <a href=""><i class="fas fa-usua"></i>Usuarios</a>
+                    <a href="/home"><i class="fas fa-usua"></i>Usuarios</a>
                 </li>
                 <li>
                     <a href="/roles"><i class="fas fa-rol"></i>Rol</a>
@@ -94,19 +94,19 @@
                     <a href="/documents"><i class="fas fa-docu"></i>Documentos</a>
                 </li>
                 <li>
-                    <a href=""><i class="fas fa-edito"></i>Editoriales</a>
+                    <a href="/home"><i class="fas fa-edito"></i>Editoriales</a>
                 </li>
                 <li>
-                    <a href=""><i class="fas fa-auto"></i>Autores</a>
+                    <a href="/home"><i class="fas fa-auto"></i>Autores</a>
                 </li>
                 <li>
-                    <a href=""><i class="fas fa-lol"></i>Idiomas</a>
+                    <a href="/home"><i class="fas fa-lol"></i>Idiomas</a>
                 </li>
                 <li>
-                    <a href=""><i class="fas fa-ikjds"></i>Bitacora</a>
+                    <a href="/home"><i class="fas fa-ikjds"></i>Bitacora</a>
                 </li>
                 <li>
-                    <a href=""><i class="fas fa-hdj"></i>Estadisticas</a>
+                    <a href="/home"><i class="fas fa-hdj"></i>Estadisticas</a>
                 </li>
             </ul>
         </nav>
