@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\DocumentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,8 +18,14 @@ Route::get('/', function () {
     return view("welcome");
 });
 
+Route::get('/prueba', function () {
+    return view("index");
+});
+
 Auth::routes();
 Route::resource('roles',RolController::class);
+Route::resource('documents',DocumentController::class);
+Route::get('/cover_Page/{documentId}',[App\Http\Controllers\HomeController::class, 'coverPage'])->name('cover_Page');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/myreg', [App\Http\Controllers\UserController::class, 'register'])->name('myreg');
 
