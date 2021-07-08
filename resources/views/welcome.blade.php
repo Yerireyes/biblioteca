@@ -10,7 +10,7 @@
     <body>
         <main class="contenedor">
             <div class="contenedor-textos">
-                <h1 class="titulo">pero le doy mi palabra que para la siguiente presentacion estaria finalizado nuestro proyecto</h1>
+                <h1 class="titulo">Bienvenidos a la Biblioteca Virtual</h1>
 
                 <a href="login" class="cta">Ingresa ahora</a>
             </div>

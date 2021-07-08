@@ -24,7 +24,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $users = User::paginate();
+
+        return view('user.index', compact('users'))
+            ->with('i', (request()->input('page', 1) - 1) * $users->perPage());
     }
 
     public function register(Request $request)
@@ -38,5 +41,20 @@ class UserController extends Controller
         $user->roleid="1";
         $user->save();
         return view("auth.login");
+    }
+
+    public function show($id)
+    {
+        $user = User::find($id);
+
+        return view('user.show', compact('user'));
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id)->delete();
+
+        return redirect()->route('users.index')
+            ->with('success', 'User deleted successfully');
     }
 }
