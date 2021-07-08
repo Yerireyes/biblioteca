@@ -4,7 +4,7 @@
 <head>
     <link  href="{{asset('css/registro.css')}}" rel="stylesheet">
     <link  href="{{asset('css/r.css')}}" rel="stylesheet">
-    
+  </head>  
 
 <div class="container">
     <div class="row justify-content-center">
