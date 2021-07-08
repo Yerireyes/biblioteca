@@ -85,7 +85,7 @@
 
             <ul class="list-unstyled components">
                 <li>
-                    <a href="/users"><i class="fas fa-usua"></i>Usuarios</a>
+                    <a href="/home"><i class="fas fa-usua"></i>Usuarios</a>
                 </li>
                 <li>
                     <a href="/roles"><i class="fas fa-rol"></i>Rol</a>
