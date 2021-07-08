@@ -18,11 +18,11 @@ class DocumentsTableSeeder extends Seeder
         $document = new Document();
         $document->year=2021;
         $document->title="Lenguajes Formales";
-        $document->coverPage="/imagenes/documents/1.jpg";
+        $document->coverPage="/imagenes/documents/perrito.jpg";
         $document->uploadDate=Carbon::now();
-        $document->downloadCounter=15;
+        $document->downloadCounter=0;
         $document->type="A";
-        $document->counterLikes=1;
+        $document->counterLikes=0;
         $document->counterDislikes=0;
         $document->description="Apunte de la materia Lenguajes Formales";
         $document->pages=64;
