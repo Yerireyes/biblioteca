@@ -94,13 +94,19 @@
                     <a href="/documents"><i class="fas fa-docu"></i>Documentos</a>
                 </li>
                 <li>
-                    <a href="/home"><i class="fas fa-edito"></i>Editoriales</a>
+                    <a href="/editorials"><i class="fas fa-edito"></i>Editoriales</a>
                 </li>
                 <li>
-                    <a href="/home"><i class="fas fa-auto"></i>Autores</a>
+                    <a href="/authors"><i class="fas fa-auto"></i>Autores</a>
                 </li>
                 <li>
-                    <a href="/home"><i class="fas fa-lol"></i>Idiomas</a>
+                    <a href="/languages"><i class="fas fa-lol"></i>Idiomas</a>
+                </li>
+                <li>
+                    <a href="/semesters"><i class="fas fa-lol"></i>Semestre</a>
+                </li>
+                <li>
+                    <a href="/subjects"><i class="fas fa-lol"></i>Materia</a>
                 </li>
                 <li>
                     <a href="/home"><i class="fas fa-ikjds"></i>Bitacora</a>
