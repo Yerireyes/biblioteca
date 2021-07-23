@@ -17,9 +17,7 @@
             {!! $errors->first('year', '<div class="invalid-feedback">:message</p>') !!}
             <br>
 
-            {{ Form::label('Portada') }}
-            {{ Form::text('coverPage', $document->coverPage, ['class' => 'form-control' . ($errors->has('coverPage') ? ' is-invalid' : 'coverPage'), 'placeholder' => 'Portada']) }}
-            {!! $errors->first('coverPage', '<div class="invalid-feedback">:message</p>') !!}
+            <input type="file" name="coverPage" class="form-control-file">
             <br>
 
 
@@ -32,8 +30,31 @@
             {{ Form::label('Nro Paginas') }}
             {{ Form::text('pages', $document->pages, ['class' => 'form-control' . ($errors->has('pages') ? ' is-invalid' : 'pages'), 'placeholder' => 'Nro Paginas']) }}
             {!! $errors->first('pages', '<div class="invalid-feedback">:message</p>') !!}
-        </div>
 
+            <br>
+            {{ Form::label('Docente') }}
+            {{ Form::text('professor', $note->professor, ['class' => 'form-control' . ($errors->has('professor') ? ' is-invalid' : 'professor'), 'placeholder' => 'Docente']) }}
+            {!! $errors->first('professor', '<div class="invalid-feedback">:message</p>') !!}
+
+            <br>
+            <select class="form-select" aria-label="Default select example" name="subjectid">
+                            @foreach($subjects as $subject)
+                            <option value="{{$subject->id}}">{{$subject->name}}</option>
+                            @endforeach
+                            <!-- <option selected>Open this select menu</option> -->
+                        </select>
+            <br>
+            <input type="file" name="mydocument" class="form-control-file">
+
+            <br>
+            <select class="form-select" aria-label="Default select example" name="managementid">
+                            @foreach($managements as $management)
+                            <option value="{{$management->id}}">{{$management->name}}</option>
+                            @endforeach
+                            <!-- <option selected>Open this select menu</option> -->
+                        </select>
+        </div>
+        
     </div>
     <div class="box-footer mt20">
         <button type="submit" class="btn btn-primary">Submit</button>

@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
 use Illuminate\Http\Request;
+use App\Models\Thesis;
+use App\Models\Document;
 use Carbon\Carbon;
+use DB;
 use Image;
 
-/**
- * Class DocumentController
- * @package App\Http\Controllers
- */
-class DocumentController extends Controller
+class ThesisController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +18,12 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $documents = Document::paginate();
-
-        return view('document.index', compact('documents'))
-            ->with('i', (request()->input('page', 1) - 1) * $documents->perPage());
+        $theses = DB::table('theses')
+            ->join('documents', 'theses.documentId', '=', 'documents.id')
+            
+            ->select('documents.*', 'theses.*')
+            ->get();
+        return view('thesis.index',compact('theses'));
     }
 
     /**
@@ -33,19 +33,15 @@ class DocumentController extends Controller
      */
     public function create()
     {
+        $thesis = new Thesis();
         $document = new Document();
-        $document->counterLikes=0;
-        $document->counterDislikes=0;
-        $document->downloadCounter=0;
-        $document->uploadDate=Carbon::now();
-
-        return view('document.create', compact('document'));
+        return view('thesis.create',compact('thesis','document'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -63,6 +59,9 @@ class DocumentController extends Controller
         $document->counterDislikes=0;
         $document->description=$request['description'];
         $document->pages=$request['pages'];
+        $path = $request->file('mydocument')->store('public/documents');
+        $pieces = explode("/", $path);
+        $document->mydocument="/storage/documents/".$pieces[2];
         $document->save();
         try{
             if($request->hasFile('coverPage')){
@@ -76,53 +75,60 @@ class DocumentController extends Controller
             throw AuthController::newError("coverPage","Tipo de archivo no soportado.");
         }
         $document->save();
-
-        return redirect()->route('documents.index')
-            ->with('success', 'Document created successfully.');
+        $thesis = new Thesis();
+        $thesis->defenseDate=$request['defenseDate'];
+        $thesis->documentId=$document->id;
+        $thesis->save();
+        
+        return $this->index();
+        
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $document = Document::find($id);
-
-        return view('document.show', compact('document'));
+        $thesis = DB::table('theses')
+        ->where('theses.id',$id)
+            ->join('documents', 'theses.documentId', '=', 'documents.id')
+            ->select('theses.*', 'documents.*')
+            ->first();
+        return view('thesis.show',compact('thesis'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $document = Document::find($id);
-        
-
-        return view('document.edit', compact('document'));
+        $thesis = Thesis::find($id);
+        $document = Document::find($thesis->documentId);
+        return view('thesis.edit',compact('thesis','document'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Document $document
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, Document $document)
     public function update(Request $request, $id)
     {
-        $document = Document::find($id);
+        $thesis = Thesis::find($id);
+        $thesis->defenseDate=$request['defenseDate'];
+        $thesis->save();
+        $document = Document::find($thesis->documentId);
         // request()->validate(Document::$rules);
         $document->year=$request['year'];
         $document->title=$request['title'];
-        $document->coverPage=$request['coverPage'];
         $document->type=$request['type'];
         $document->description=$request['description'];
         $document->pages=$request['pages'];
@@ -137,34 +143,28 @@ class DocumentController extends Controller
         }catch(Exception $e){
             throw AuthController::newError("coverPage","Tipo de archivo no soportado.");
         }
+        $path = $request->file('mydocument')->store('public/documents');
+        $pieces = explode("/", $path);
+        $document->mydocument="/storage/documents/".$pieces[2];
         $document->save();
         
-        // $document->update($request->all());
-
-        return redirect()->route('documents.index')
-            ->with('success', 'Document updated successfully');
+        return $this->index();
     }
 
     /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $document = Document::find($id)->delete();
+        $thesis = Thesis::find($id);
+        $document = Document::find($thesis->documentId);
+        $thesis->delete();
+        $document->delete();
 
-        return redirect()->route('documents.index')
-            ->with('success', 'Document deleted successfully');
-    }
-
-    public function coverPage($documentId){
-        $document=Document::find($documentId);
-        $coverPage=$document->coverPage;
-        try{
-            return Image::make(public_path(). $coverPage)->response('jpg');
-         }catch(Exception $e){
-            return Image::make(public_path(). "/imagenes/documents/1.jpg")->response('jpg');
-         }
+        return redirect()->route('theses.index')
+            ->with('success', 'Tesis Eliminada con exito');
     }
 }

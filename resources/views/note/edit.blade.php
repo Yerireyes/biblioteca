@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Editar Semestre
+    Editar Apunte
 @endsection
 
 @section('content')
@@ -13,14 +13,14 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Editar Semestre</span>
+                        <span class="card-title">Actualizar Apunte</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('semesters.update', $semester->id) }}"  semester="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('notes.update', $note->id) }}"  role="form" enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
                             @csrf
 
-                            @include('semester.form')
+                            @include('note.form')
 
                         </form>
                     </div>

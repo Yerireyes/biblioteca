@@ -28,18 +28,15 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function index2()
+    {
+        return view('home2');
+    }
+    
     public function register(Request $request)
     {
         return $request->all();
     }
 
-    public function coverPage($documentId){
-        $document=Document::find($documentId);
-        $coverPage=$document->coverPage;
-        try{
-            return Image::make(public_path(). $coverPage)->response('jpg');
-         }catch(Exception $e){
-            return Image::make(public_path(). "/imagenes/documents/1.jpg")->response('jpg');
-         }
-    }
+    
 }

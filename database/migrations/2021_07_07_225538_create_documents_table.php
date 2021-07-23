@@ -24,7 +24,8 @@ class CreateDocumentsTable extends Migration
             $table->integer('counterLikes');            
             $table->integer('counterDislikes');            
             $table->text('description');           
-            $table->integer('pages');            
+            $table->integer('pages');                 
+            $table->string('mydocument');                 
             $table->timestamps();
         });
     }

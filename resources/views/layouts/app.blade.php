@@ -91,7 +91,10 @@
                     <a href="/roles"><i class="fas fa-rol"></i>Rol</a>
                 </li>
                 <li>
-                    <a href="/documents"><i class="fas fa-docu"></i>Documentos</a>
+                    <a href="/theses"><i class="fas fa-docu"></i>Tesis</a>
+                </li>
+                <li>
+                    <a href="/notes"><i class="fas fa-docu"></i>Apuntes</a>
                 </li>
                 <li>
                     <a href="/editorials"><i class="fas fa-edito"></i>Editoriales</a>
@@ -103,13 +106,16 @@
                     <a href="/languages"><i class="fas fa-lol"></i>Idiomas</a>
                 </li>
                 <li>
-                    <a href="/semesters"><i class="fas fa-lol"></i>Semestre</a>
+                    <a href="/managements"><i class="fas fa-lol"></i>Gestion</a>
                 </li>
                 <li>
                     <a href="/subjects"><i class="fas fa-lol"></i>Materia</a>
                 </li>
                 <li>
                     <a href="/home"><i class="fas fa-ikjds"></i>Bitacora</a>
+                </li>
+                <li>
+                    <a href="/categories"><i class="fas fa-ikjds"></i>Categoria</a>
                 </li>
                 <li>
                     <a href="/home"><i class="fas fa-hdj"></i>Estadisticas</a>

@@ -1,0 +1,56 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Document;
+use App\Models\Thesis;
+use Carbon\Carbon;
+
+class ThesesTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $document = new Document();
+        $document->year=2021;
+        $document->title="Lenguajes Formales";
+        $document->coverPage="/imagenes/documents/perrito.jpg";
+        $document->uploadDate=Carbon::now();
+        $document->downloadCounter=0;
+        $document->type="T";
+        $document->counterLikes=0;
+        $document->counterDislikes=0;
+        $document->description="Apunte de la materia Lenguajes Formales";
+        $document->pages=64;
+        $document->mydocument="/storage/documents/default.pdf";
+        $document->save();
+        $thesis = new Thesis();
+        $thesis->defenseDate=carbon::now();
+        $thesis->documentId=1;
+        $thesis->save();
+
+
+        $document = new Document();
+        $document->year=2011;
+        $document->title="Programacion";
+        $document->coverPage="/imagenes/documents/perrito.jpg";
+        $document->uploadDate=Carbon::now();
+        $document->downloadCounter=0;
+        $document->type="T";
+        $document->counterLikes=0;
+        $document->counterDislikes=0;
+        $document->description="Apunte de Programacion";
+        $document->pages=50;
+        $document->mydocument="/storage/documents/default.pdf";
+        $document->save();
+        $thesis = new Thesis();
+        $thesis->defenseDate=carbon::now();
+        $thesis->documentId=2;
+        $thesis->save();
+    }
+}

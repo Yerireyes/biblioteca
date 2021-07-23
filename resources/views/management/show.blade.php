@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    {{ $semester->management ?? 'Show Semester' }}
+    {{ $management->name ?? 'Mostrar Gestion' }}
 @endsection
 
 @section('content')
@@ -11,10 +11,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <span class="card-title">Mostrar Semestre</span>
+                            <span class="card-title">Mostrar Gestion</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('semesters.index') }}"> Volver</a>
+                            <a class="btn btn-primary" href="{{ route('managements.index') }}"> Volver</a>
                         </div>
                     </div>
 
@@ -22,7 +22,7 @@
                         
                         <div class="form-group">
                             <strong>Gestion:</strong>
-                            {{ $semester->management }}
+                            {{ $management->name }}
 
                         </div>
 

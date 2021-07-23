@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Semester extends Model
+class Thesis extends Model
 {
     use HasFactory;
-    static $rules = [
-		'management' => 'required',
-    ];
-
-    protected $fillable = ['management'];
 }

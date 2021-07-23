@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
 use Illuminate\Http\Request;
+use App\Models\Document;
+use App\Models\Note;
+use App\Models\Subject;
+use App\Models\Management;
 use Carbon\Carbon;
+use Exception;
+use DB;
 use Image;
 
-/**
- * Class DocumentController
- * @package App\Http\Controllers
- */
-class DocumentController extends Controller
+class NoteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +21,12 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $documents = Document::paginate();
-
-        return view('document.index', compact('documents'))
-            ->with('i', (request()->input('page', 1) - 1) * $documents->perPage());
+        $notes = Note::
+           join('documents', 'notes.documentId', '=', 'documents.id')
+            ->join('subjects', 'notes.subjectId', '=', 'subjects.id')
+            ->select('subjects.*','documents.*', 'notes.*')
+            ->get();
+        return view('note.index',compact('notes'));
     }
 
     /**
@@ -33,19 +36,17 @@ class DocumentController extends Controller
      */
     public function create()
     {
+        $note = new Note();
         $document = new Document();
-        $document->counterLikes=0;
-        $document->counterDislikes=0;
-        $document->downloadCounter=0;
-        $document->uploadDate=Carbon::now();
-
-        return view('document.create', compact('document'));
+        $subjects = Subject::all();
+        $managements = Management::all();
+        return view('note.create',compact('note','document','subjects','managements'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -63,6 +64,9 @@ class DocumentController extends Controller
         $document->counterDislikes=0;
         $document->description=$request['description'];
         $document->pages=$request['pages'];
+        $path = $request->file('mydocument')->store('public/documents');
+        $pieces = explode("/", $path);
+        $document->mydocument="/storage/documents/".$pieces[2];
         $document->save();
         try{
             if($request->hasFile('coverPage')){
@@ -76,53 +80,64 @@ class DocumentController extends Controller
             throw AuthController::newError("coverPage","Tipo de archivo no soportado.");
         }
         $document->save();
-
-        return redirect()->route('documents.index')
-            ->with('success', 'Document created successfully.');
+        $note = new Note();
+        $note->professor=$request['professor'];
+        $note->documentId=$document->id;
+        $note->subjectId=$request['subjectid'];
+        $note->managementId=$request['managementid'];
+        $note->save();
+        return $this->index();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $document = Document::find($id);
-
-        return view('document.show', compact('document'));
+        $note = DB::table('notes')
+        ->where('notes.id',$id)
+            ->join('documents', 'notes.documentId', '=', 'documents.id')
+            ->select('notes.*', 'documents.*')
+            ->first();
+        return view('note.show',compact('note'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $document = Document::find($id);
-        
-
-        return view('document.edit', compact('document'));
+        $note = Note::find($id);
+        $document = Document::find($note->documentId);
+        $subjects = Subject::all();
+        $managements = Management::all();
+        return view('note.edit',compact('note','document','subjects','managements'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Document $document
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, Document $document)
     public function update(Request $request, $id)
     {
-        $document = Document::find($id);
+        $note = Note::find($id);
+        $note->professor=$request['professor'];
+        $note->subjectId=$request['subjectid'];
+        $note->managementId=$request['managementid'];
+        $note->save();
+        $document = Document::find($note->documentId);
         // request()->validate(Document::$rules);
         $document->year=$request['year'];
         $document->title=$request['title'];
-        $document->coverPage=$request['coverPage'];
         $document->type=$request['type'];
         $document->description=$request['description'];
         $document->pages=$request['pages'];
@@ -137,34 +152,35 @@ class DocumentController extends Controller
         }catch(Exception $e){
             throw AuthController::newError("coverPage","Tipo de archivo no soportado.");
         }
+        try{
+            if($request->hasFile('mydocumnet')){
+                $path = $request->file('mydocument')->store('public/documents');
+                $pieces = explode("/", $path);
+                $document->mydocument="/storage/documents/".$pieces[2];
+            }
+        }catch(Exception $e){
+            
+        }
+        
         $document->save();
         
-        // $document->update($request->all());
-
-        return redirect()->route('documents.index')
-            ->with('success', 'Document updated successfully');
+        return $this->index();
     }
 
     /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $document = Document::find($id)->delete();
+        $note = Note::find($id);
+        $document = Document::find($note->documentId);
+        $note->delete();
+        $document->delete();
 
-        return redirect()->route('documents.index')
-            ->with('success', 'Document deleted successfully');
-    }
-
-    public function coverPage($documentId){
-        $document=Document::find($documentId);
-        $coverPage=$document->coverPage;
-        try{
-            return Image::make(public_path(). $coverPage)->response('jpg');
-         }catch(Exception $e){
-            return Image::make(public_path(). "/imagenes/documents/1.jpg")->response('jpg');
-         }
+        return redirect()->route('theses.index')
+            ->with('success', 'Apunte Eliminado con exito');
     }
 }

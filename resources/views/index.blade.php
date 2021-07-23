@@ -72,6 +72,9 @@
           <a href=""><i class="fas fa-ikjds"></i>Bitacora</a>
         </li>
         <li>
+          <a href=""><i class="fas fa-ikjds"></i>Categoria</a>
+        </li>
+        <li>
           <a href=""><i class="fas fa-hdj"></i>Estadisticas</a>
         </li>
       </ul>
