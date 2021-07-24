@@ -41,7 +41,7 @@ class LanguageController extends Controller
     {
         request()->validate(Language::$rules);
         $language = new Language();
-        $language->languageName=$request['languageName'];
+        $language->name=$request['languageName'];
         $language->save();
 
         // $language = Language::create($request->all());

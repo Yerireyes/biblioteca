@@ -47,7 +47,7 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-											<td>{{ $language->languageName }}</td>
+											<td>{{ $language->name }}</td>
 
                                             <td>
                                                 <form action="{{ route('languages.destroy',$language->id) }}" method="POST">

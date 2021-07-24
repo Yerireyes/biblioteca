@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Author
+    Editoriales
 @endsection
 
 @section('content')
@@ -13,13 +13,20 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Autor') }}
+                                {{ __('Editoriales') }}
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('authors.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
-                                </a>
+                                <form action="{{ route('books.createEditorial',$book->id) }}" method="post">
+                                    @csrf
+                             <select class="form-select" aria-label="Default select example" name="editorialId">
+                                @foreach($editorialsAvailable as $editorial)
+                                <option value="{{$editorial->id}}">{{$editorial->name}}</option>
+                            @endforeach
+                            <!-- <option selected>Open this select menu</option> -->
+                        </select>
+                                <input type="submit" value="asignar Editorial" class="btn btn-primary btn-sm float-right">
+                                </form>
                               </div>
                         </div>
                     </div>
@@ -43,24 +50,19 @@
                                         
 										<th>Nombre</th>
 
-                                        <th>Apellido</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($authors as $author)
+                                    @foreach ($editorials as $editorial)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ $editorial->id }}</td>
                                             
-											<td>{{ $author->name }}</td>
-
-											<td>{{ $author->lastName }}</td>
+											<td>{{ $editorial->name }}</td>
 
                                             <td>
-                                                <form action="{{ route('authors.destroy',$author->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('authors.show',$author->id) }}"><i class="fa fa-fw fa-eye"></i> Mostrar</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('authors.edit',$author->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
+                                                <form action="{{ route('books.editorialsDestroy',[$book->id, $editorial->id]) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
@@ -73,7 +75,6 @@
                         </div>
                     </div>
                 </div>
-                {!! $authors->links() !!}
             </div>
         </div>
     </div>

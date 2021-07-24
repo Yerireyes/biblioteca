@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Author
+    Libros
 @endsection
 
 @section('content')
@@ -13,11 +13,11 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Autor') }}
+                                {{ __('Libros') }}
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('authors.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                <a href="{{ route('books.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
@@ -25,11 +25,6 @@
                     </div>
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
-                    @if ($message = Session::get('error'))
-                        <div class="alert alert-danger">
                             <p>{{ $message }}</p>
                         </div>
                     @endif
@@ -41,29 +36,34 @@
                                     <tr>
                                         <th>No</th>
                                         
-										<th>Nombre</th>
-
-                                        <th>Apellido</th>
+										<th>Titulo</th>
+										<th>Edicion</th>
+										<th>Idioma</th>
+										<th>Nro Descargas</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($authors as $author)
+                                    @foreach ($books as $book)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ $book->id }}</td>
                                             
-											<td>{{ $author->name }}</td>
+											<td>{{ $book->title }}</td>
+											<td>{{ $book->edition }}</td>
+											<td>{{ $book->languageName($book->languageId) }}</td>
+											<td>{{ $book->downloadCounter }}</td>
 
-											<td>{{ $author->lastName }}</td>
 
                                             <td>
-                                                <form action="{{ route('authors.destroy',$author->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('authors.show',$author->id) }}"><i class="fa fa-fw fa-eye"></i> Mostrar</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('authors.edit',$author->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
+                                                <form action="{{ route('books.destroy',$book->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('books.show',$book->id) }}"><i class="fa fa-fw fa-eye"></i> Mostrar</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('books.edit',$book->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('books.editorials',$book->id) }}"><i class="fa fa-fw fa-edit"></i> Editoriales</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
+                                                    
                                                 </form>
                                             </td>
                                         </tr>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $authors->links() !!}
+               
             </div>
         </div>
     </div>

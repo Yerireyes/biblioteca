@@ -5,10 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Book extends Model
+class BooksEditorials extends Model
 {
     use HasFactory;
-    public function languageName($languageId){
-        return Language::find($languageId)->name;
-    }
 }

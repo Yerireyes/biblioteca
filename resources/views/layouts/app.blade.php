@@ -91,10 +91,13 @@
                     <a href="/roles"><i class="fas fa-rol"></i>Rol</a>
                 </li>
                 <li>
-                    <a href="/theses"><i class="fas fa-docu"></i>Tesis</a>
+                    <a href="/books"><i class="fas fa-docu"></i>Libros</a>
                 </li>
                 <li>
                     <a href="/notes"><i class="fas fa-docu"></i>Apuntes</a>
+                </li>
+                <li>
+                    <a href="/theses"><i class="fas fa-docu"></i>Tesis</a>
                 </li>
                 <li>
                     <a href="/editorials"><i class="fas fa-edito"></i>Editoriales</a>
