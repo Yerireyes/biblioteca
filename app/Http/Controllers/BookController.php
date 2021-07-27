@@ -11,6 +11,7 @@ use App\Models\Editorial;
 use App\Models\Category;
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
+use App\Models\Download;
 use Carbon\Carbon;
 use DB;
 use Image;
@@ -198,6 +199,9 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $document = Document::find($book->documentId);
+        Download::where("documentId", $book->documentId)->delete();
+        AuthorsDocuments::where("documentId", $book->documentId)->delete();
+        BooksEditorials::where("bookId", $book->id)->delete();
         $book->delete();
         $document->delete();
 

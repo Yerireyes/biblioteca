@@ -97,7 +97,7 @@
                                 <a class="text-dark font-weight-bold" data-bs-toggle="collapse"
                                     href="#category-{{$subCategory['id']}}">{{$subCategory['name']}}</a>
                                     @else
-                                    <a class="text-dark font-weight-bold"
+                                    <a class="text-dark font-weight-bold" 
                                     href="{{route('books.user',$subCategory['id'])}}">{{$subCategory['name']}}</a>
                                     @endif
                                 <div class="collapse" id="category-{{$subCategory['id']}}">
