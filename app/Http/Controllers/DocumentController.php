@@ -219,7 +219,7 @@ class DocumentController extends Controller
         $documentPath="/public/".$pieces[2]."/".$pieces[3];
         $pieces=explode(".",$pieces[3]);
         $extension=$pieces[1];
-        return response()->file($documentPath);
+        return response()->file(public_path()."/documents/0.pdf");
         
     }
 }

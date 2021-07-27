@@ -33,7 +33,7 @@ Route::get('/prueba', function () {
 });
 
 Auth::routes();
-Route::post('/login2',[App\Http\Controllers\UserController::class, 'login'])->name('login');
+Route::post('/login',[App\Http\Controllers\UserController::class, 'login'])->name('login');
 Route::resource('roles',RolController::class);
 // Route::resource('documents',DocumentController::class);
 Route::resource('users',UserController::class);
