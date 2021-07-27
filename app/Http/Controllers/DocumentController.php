@@ -212,15 +212,14 @@ class DocumentController extends Controller
             $download->documentId=$id;
             $download->count=0;
         }
+        
         $download->count++;
         $download->save();
         $pieces = explode("/", $document->mydocument);
-        $documentPath=$pieces[2]."/".$pieces[3];
+        $documentPath="/public/".$pieces[2]."/".$pieces[3];
         $pieces=explode(".",$pieces[3]);
         $extension=$pieces[1];
-        
-        // return Storage::download($documentPath, $document->title.".".$extension);
-        return response()->file('storage/'.$documentPath);
+        return response()->file($documentPath);
         
     }
 }
