@@ -47,6 +47,7 @@ Route::resource('theses',ThesisController::class);
 Route::resource('notes',NoteController::class);
 Route::resource('books',BookController::class);
 Route::get('/documents/{id}/download',[App\Http\Controllers\DocumentController::class, 'download'])->name('documents.download');
+Route::get('/documents/{id}/show_Document',[App\Http\Controllers\DocumentController::class, 'showDocument'])->name('documents.show');
 Route::get('/books/{id}/editorials',[App\Http\Controllers\BookController::class, 'editorialsIndex'])->name('books.editorials');
 Route::post('/books/{id}/editorials',[App\Http\Controllers\BookController::class, 'editorialsCreate'])->name('books.createEditorial');
 Route::delete('/books/{bookId}/editorials/{editorialId}',[App\Http\Controllers\BookController::class, 'editorialsDestroy'])->name('books.editorialsDestroy');

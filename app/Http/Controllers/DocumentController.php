@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Image;
 use Auth;
+use File;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -193,6 +194,33 @@ class DocumentController extends Controller
         $pieces=explode(".",$pieces[3]);
         $extension=$pieces[1];
         return Storage::download($documentPath, $document->title.".".$extension);
+        
+    }
 
+    public function showDocument($id){
+        $document=Document::find($id);
+        $document->downloadCounter++;
+        $document->save();
+        $user=Auth::user();
+        $download=Download::where([
+            ['userId',$user->id],
+            ['documentId',$id]
+        ])->first();
+        if (!$download){
+            $download=new Download();
+            $download->userId=$user->id;
+            $download->documentId=$id;
+            $download->count=0;
+        }
+        $download->count++;
+        $download->save();
+        $pieces = explode("/", $document->mydocument);
+        $documentPath=$pieces[2]."/".$pieces[3];
+        $pieces=explode(".",$pieces[3]);
+        $extension=$pieces[1];
+        
+        // return Storage::download($documentPath, $document->title.".".$extension);
+        return response()->file('storage/'.$documentPath);
+        
     }
 }
