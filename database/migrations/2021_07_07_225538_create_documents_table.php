@@ -23,7 +23,7 @@ class CreateDocumentsTable extends Migration
             $table->char('type');            
             $table->integer('counterLikes');            
             $table->integer('counterDislikes');            
-            $table->text('description');           
+            $table->text('description')->nullable();           
             $table->integer('pages');                 
             $table->string('mydocument');   
             $table->unsignedBigInteger('categoryId');

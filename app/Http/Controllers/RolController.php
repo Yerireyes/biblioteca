@@ -44,7 +44,9 @@ class RolController extends Controller
     public function store(Request $request)
     {
         request()->validate(Role::$rules);
-
+        $request->validate([
+            'roleName'=>['unique:roles']
+        ]);
         $rol = Role::create($request->all());
 
         return redirect()->route('roles.index')
@@ -89,9 +91,11 @@ class RolController extends Controller
     {
         $rol = Role::find($id);
         request()->validate(Role::$rules);
-
+        $request->validate([
+            'roleName'=>['unique:roles']
+        ]);
         $rol->update($request->all());
-
+        
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully');
     }

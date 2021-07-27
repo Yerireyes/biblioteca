@@ -25,5 +25,21 @@ class ManagementsTableSeeder extends Seeder
         $management=new Management();
         $management->name='II-2019';
         $management->save();
+
+        $management=new Management();
+        $management->name='I-2020';
+        $management->save();
+
+        $management=new Management();
+        $management->name='II-2020';
+        $management->save();
+
+        $management=new Management();
+        $management->name='I-2021';
+        $management->save();
+
+        $management=new Management();
+        $management->name='II-2021';
+        $management->save();
     }
 }

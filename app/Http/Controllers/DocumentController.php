@@ -199,27 +199,17 @@ class DocumentController extends Controller
 
     public function showDocument($id){
         $document=Document::find($id);
-        $document->downloadCounter++;
         $document->save();
         $user=Auth::user();
         $download=Download::where([
             ['userId',$user->id],
             ['documentId',$id]
         ])->first();
-        if (!$download){
-            $download=new Download();
-            $download->userId=$user->id;
-            $download->documentId=$id;
-            $download->count=0;
-        }
-        
-        $download->count++;
-        $download->save();
         $pieces = explode("/", $document->mydocument);
-        $documentPath="/public/".$pieces[2]."/".$pieces[3];
+        $documentPath="/".$pieces[2]."/".$pieces[3];
         $pieces=explode(".",$pieces[3]);
         $extension=$pieces[1];
-        return response()->file(public_path()."/documents/0.pdf");
+        return response()->file('storage/'.$documentPath);
         
     }
 }

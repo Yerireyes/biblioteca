@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             SubjectsTableSeeder::class,
             ManagementsTableSeeder::class,
             ThesesTableSeeder::class,
+            EditorialsTableSeeder::class,
             BooksTableSeeder::class
             ]);
     }

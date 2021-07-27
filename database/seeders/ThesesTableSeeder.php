@@ -21,14 +21,13 @@ class ThesesTableSeeder extends Seeder
         
         $document = new Document();
         $document->year=2021;
-        $document->title="Lenguajes Formales";
+        $document->title="Maquina de Turing";
         $document->coverPage="/imagenes/documents/perrito.jpg";
         $document->uploadDate=Carbon::now();
         $document->downloadCounter=0;
         $document->type="T";
         $document->counterLikes=0;
         $document->counterDislikes=0;
-        $document->description="Apunte de la materia Lenguajes Formales";
         $document->pages=64;
         $document->mydocument="/storage/documents/default.pdf";
         $document->categoryId=1;
@@ -46,14 +45,13 @@ class ThesesTableSeeder extends Seeder
 
         $document = new Document();
         $document->year=2011;
-        $document->title="Programacion";
+        $document->title="Intervencion de posos en el campo palmar de la compañia Dong Won Corporation Bolivia";
         $document->coverPage="/imagenes/documents/perrito.jpg";
         $document->uploadDate=Carbon::now();
         $document->downloadCounter=0;
         $document->type="T";
         $document->counterLikes=0;
         $document->counterDislikes=0;
-        $document->description="Apunte de Programacion";
         $document->pages=50;
         $document->mydocument="/storage/documents/default.pdf";
         $document->categoryId=1;
