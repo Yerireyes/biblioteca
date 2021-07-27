@@ -37,7 +37,6 @@
                                         <th>No</th>
                                         
 										<th>Titulo</th>
-										<th>Tipo</th>
 										<th>NroDescargas</th>
 										<th>Fecha de Defensa</th>
 
@@ -50,7 +49,6 @@
                                             <td>{{ $thesis->id }}</td>
                                             
 											<td>{{ $thesis->title }}</td>
-											<td>{{ $thesis->type }}</td>
 											<td>{{ $thesis->downloadCounter }}</td>
 											<td>{{ $thesis->defenseDate }}</td>
 

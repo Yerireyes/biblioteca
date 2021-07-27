@@ -148,6 +148,61 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="{{asset('js/script.js')}}"></script>
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        $("#options").on("change", function () {
+            console.clear();
+            var id = $(this).val();
+            var name = $(this).find("option:selected").text();
+            console.log(`Option selected: ${name}`);
+
+            console.log(`Verifying if was already selected...`);
+            if (alreadyExists(id)) {
+                console.log(`Option already selected. Not added`);
+            } else {
+                console.log(`Option not selected. Yes added`);
+                addOption(id, name);
+            }
+        });
+        function alreadyExists(id) {
+            var inputValue = $("#selectedOptionIds").val();
+            var selectedIds = inputValue.split("-");
+            return selectedIds.indexOf(id) > -1;
+        }
+        function addOption(id, name) {
+            $("#selected-options").append(`
+                <span id="${id}" class="badge rounded-pill bg-dark text-white">${name} 
+                <button onclick="eliminar(${id})" type="button" class="badge rounded-pill bg-dark text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x author" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                </svg>
+              </button>
+              </span>
+                
+                
+                `);
+            var selectedIds = $("#selectedOptionIds").val() + "-" + id;
+            $("#selectedOptionIds").val(selectedIds);
+        }
+        function eliminar(id){
+            var inputValue = $("#selectedOptionIds").val();
+            var selectedIds = inputValue.split("-");
+            $("#selected-options span#"+id).remove();
+            var newSelectedIds = "";
+            selectedIds.forEach(element => {
+                if (element!="" && element!=id){
+                    newSelectedIds += "-" + element;
+                }
+                
+            });
+            $("#selectedOptionIds").val(newSelectedIds);
+        }
+
+        
+    </script>
 </body>
 
 </html>
+

@@ -7,6 +7,9 @@ use App\Models\Document;
 use App\Models\Note;
 use App\Models\Subject;
 use App\Models\Management;
+use App\Models\Category;
+use App\Models\Author;
+use App\Models\AuthorsDocuments;
 use Carbon\Carbon;
 use Exception;
 use DB;
@@ -40,7 +43,9 @@ class NoteController extends Controller
         $document = new Document();
         $subjects = Subject::all();
         $managements = Management::all();
-        return view('note.create',compact('note','document','subjects','managements'));
+        $categories = Category::all();
+        $authors = Author::all();
+        return view('note.create',compact('note','document','subjects','managements','categories','authors'));
     }
 
     /**
@@ -59,7 +64,7 @@ class NoteController extends Controller
         $document->coverPage="/imagenes/documents/perrito.jpg";
         $document->uploadDate=Carbon::now();
         $document->downloadCounter=0;
-        $document->type=$request['type'];
+        $document->type="L";
         $document->counterLikes=0;
         $document->counterDislikes=0;
         $document->description=$request['description'];
@@ -67,6 +72,7 @@ class NoteController extends Controller
         $path = $request->file('mydocument')->store('public/documents');
         $pieces = explode("/", $path);
         $document->mydocument="/storage/documents/".$pieces[2];
+        $document->categoryId=$request['categoryId'];
         $document->save();
         try{
             if($request->hasFile('coverPage')){
@@ -86,6 +92,14 @@ class NoteController extends Controller
         $note->subjectId=$request['subjectid'];
         $note->managementId=$request['managementid'];
         $note->save();
+        $authors=$request['authors-id'];
+        $pieces = explode("-", $authors);
+        for ($i=1; $i < count($pieces) ; $i++) { 
+            $authorsDocuments=new AuthorsDocuments();
+            $authorsDocuments->authorId=$pieces[$i];
+            $authorsDocuments->documentId=$document->id;
+            $authorsDocuments->save();
+        }
         return $this->index();
     }
 
@@ -102,7 +116,12 @@ class NoteController extends Controller
             ->join('documents', 'notes.documentId', '=', 'documents.id')
             ->select('notes.*', 'documents.*')
             ->first();
-        return view('note.show',compact('note'));
+
+        $authors = Author::
+            join('authors_documents', 'authors_documents.authorId', '=', 'authors.id')
+            ->where('authors_documents.documentId',$note->documentId)
+            ->get();
+        return view('note.show',compact('note','authors'));
     }
 
     /**
@@ -117,7 +136,8 @@ class NoteController extends Controller
         $document = Document::find($note->documentId);
         $subjects = Subject::all();
         $managements = Management::all();
-        return view('note.edit',compact('note','document','subjects','managements'));
+        $categories = Category::all();
+        return view('note.edit',compact('note','document','subjects','managements','categories'));
     }
 
     /**
@@ -138,9 +158,9 @@ class NoteController extends Controller
         // request()->validate(Document::$rules);
         $document->year=$request['year'];
         $document->title=$request['title'];
-        $document->type=$request['type'];
         $document->description=$request['description'];
         $document->pages=$request['pages'];
+        $document->categoryId=$request['categoryId'];
         try{
             if($request->hasFile('coverPage')){
                 $coverPage=$request->coverPage;
@@ -152,14 +172,10 @@ class NoteController extends Controller
         }catch(Exception $e){
             throw AuthController::newError("coverPage","Tipo de archivo no soportado.");
         }
-        try{
-            if($request->hasFile('mydocumnet')){
-                $path = $request->file('mydocument')->store('public/documents');
-                $pieces = explode("/", $path);
-                $document->mydocument="/storage/documents/".$pieces[2];
-            }
-        }catch(Exception $e){
-            
+        if($request->hasFile('mydocumnet')){
+            $path = $request->file('mydocument')->store('public/documents');
+            $pieces = explode("/", $path);
+            $document->mydocument="/storage/documents/".$pieces[2];
         }
         
         $document->save();

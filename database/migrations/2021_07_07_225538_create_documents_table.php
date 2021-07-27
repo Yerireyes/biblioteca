@@ -25,7 +25,9 @@ class CreateDocumentsTable extends Migration
             $table->integer('counterDislikes');            
             $table->text('description');           
             $table->integer('pages');                 
-            $table->string('mydocument');                 
+            $table->string('mydocument');   
+            $table->unsignedBigInteger('categoryId');
+            $table->foreign('categoryId')->references('id')->on('categories');              
             $table->timestamps();
         });
     }

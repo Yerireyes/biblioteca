@@ -8,6 +8,9 @@ use App\Models\Document;
 use App\Models\Language;
 use App\Models\BooksEditorials;
 use App\Models\Editorial;
+use App\Models\Category;
+use App\Models\Author;
+use App\Models\AuthorsDocuments;
 use Carbon\Carbon;
 use DB;
 use Image;
@@ -41,7 +44,9 @@ class BookController extends Controller
         $book = new Book();
         $document = new Document();
         $languages = Language::all();
-        return view('book.create',compact('book','document','languages'));
+        $categories = Category::all();
+        $authors = Author::all();
+        return view('book.create',compact('book','document','languages','categories','authors'));
     }
 
     /**
@@ -53,6 +58,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         request()->validate(Document::$rules); 
+        
         // $document = Document::create($request->all());
         $document = new Document();
         $document->year=$request['year'];
@@ -60,11 +66,12 @@ class BookController extends Controller
         $document->coverPage="/imagenes/documents/perrito.jpg";
         $document->uploadDate=Carbon::now();
         $document->downloadCounter=0;
-        $document->type=$request['type'];
+        $document->type='L';
         $document->counterLikes=0;
         $document->counterDislikes=0;
         $document->description=$request['description'];
         $document->pages=$request['pages'];
+        $document->categoryId=$request['categoryId'];
         $path = $request->file('mydocument')->store('public/documents');
         $pieces = explode("/", $path);
         $document->mydocument="/storage/documents/".$pieces[2];
@@ -88,6 +95,14 @@ class BookController extends Controller
         $book->documentId=$document->id;
         $book->languageId=$request['languageId'];
         $book->save();
+        $authors=$request['authors-id'];
+        $pieces = explode("-", $authors);
+        for ($i=1; $i < count($pieces) ; $i++) { 
+            $authorsDocuments=new  AuthorsDocuments();
+            $authorsDocuments->authorId=$pieces[$i];
+            $authorsDocuments->documentId=$document->id;
+            $authorsDocuments->save();
+        }
         return $this->index();
     }
 
@@ -105,7 +120,12 @@ class BookController extends Controller
             ->join('languages', 'books.languageId', '=', 'languages.id')
             ->select('languages.*','documents.*', 'books.*')
             ->first();
-        return view('book.show',compact('book'));
+
+        $authors = Author::
+        join('authors_documents', 'authors_documents.authorId', '=', 'authors.id')
+        ->where('authors_documents.documentId',$book->documentId)
+        ->get();
+        return view('book.show',compact('book','authors'));
     }
 
     /**
@@ -119,7 +139,8 @@ class BookController extends Controller
         $book = Book::find($id);
         $document = Document::find($book->documentId);
         $languages = Language::all();
-        return view('book.edit',compact('book','document','languages'));
+        $categories = Category::all();
+        return view('book.edit',compact('book','document','languages','categories'));
     }
 
     /**
@@ -144,6 +165,7 @@ class BookController extends Controller
         $document->type=$request['type'];
         $document->description=$request['description'];
         $document->pages=$request['pages'];
+        $document->categoryId=$request['categoryId'];
         try{
             if($request->hasFile('coverPage')){
                 $coverPage=$request->coverPage;
@@ -155,16 +177,11 @@ class BookController extends Controller
         }catch(Exception $e){
             throw AuthController::newError("coverPage","Tipo de archivo no soportado.");
         }
-        try{
-            if($request->hasFile('mydocumnet')){
-                $path = $request->file('mydocument')->store('public/documents');
-                $pieces = explode("/", $path);
-                $document->mydocument="/storage/documents/".$pieces[2];
-            }
-        }catch(Exception $e){
-            
+        if($request->hasFile('mydocument')){
+            $path = $request->file('mydocument')->store('public/documents');
+            $pieces = explode("/", $path);
+            $document->mydocument="/storage/documents/".$pieces[2];
         }
-        
         $document->save();
         
         return $this->index();
@@ -223,5 +240,45 @@ class BookController extends Controller
 
         return redirect()->back()
             ->with('success', 'Editorial Removida');
+    }
+
+    public function userIndex($categoryId){
+
+        $books=Book::
+        join('documents','books.documentId','documents.id')
+        ->where('documents.categoryId',$categoryId)
+        ->get();
+        $categories=$this->getCategories();
+        return view('book.user',compact('books','categories'));
+    } 
+
+    public function userResult(){
+
+    }
+
+    public function getCategories(){
+        $cateories=Category::
+        whereNull('superCategory')->get();
+        $categories=[];
+        foreach ($cateories as $category) {
+            $mySubCategories=Category::where('superCategory',$category->id)->get();
+            $x=[];
+            foreach ($mySubCategories as $mySubCategory) {
+                $mymySubCategory=[
+                    'id'=>$mySubCategory->id,
+                    'name'=>$mySubCategory->name,
+                    'subCategories'=>Category::where('superCategory',$mySubCategory->id)->get()
+                ];
+                array_push($x, $mymySubCategory);
+            }
+            
+            $myCategory=[
+                'id'=>$category->id,
+                'name'=>$category->name,
+                'subCategories'=>$x
+            ];
+            array_push($categories, $myCategory);
+        }
+        return $categories;
     }
 }

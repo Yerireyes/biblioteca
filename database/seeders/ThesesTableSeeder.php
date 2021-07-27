@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Document;
 use App\Models\Thesis;
+use App\Models\AuthorsDocuments;
 use Carbon\Carbon;
 
 class ThesesTableSeeder extends Seeder
@@ -16,6 +17,8 @@ class ThesesTableSeeder extends Seeder
      */
     public function run()
     {
+
+        
         $document = new Document();
         $document->year=2021;
         $document->title="Lenguajes Formales";
@@ -28,12 +31,18 @@ class ThesesTableSeeder extends Seeder
         $document->description="Apunte de la materia Lenguajes Formales";
         $document->pages=64;
         $document->mydocument="/storage/documents/default.pdf";
+        $document->categoryId=1;
         $document->save();
         $thesis = new Thesis();
         $thesis->defenseDate=carbon::now();
         $thesis->documentId=1;
         $thesis->save();
 
+
+        $authorsDocuments=new AuthorsDocuments();
+        $authorsDocuments->documentId=1;
+        $authorsDocuments->authorId=1;
+        $authorsDocuments->save();
 
         $document = new Document();
         $document->year=2011;
@@ -47,10 +56,21 @@ class ThesesTableSeeder extends Seeder
         $document->description="Apunte de Programacion";
         $document->pages=50;
         $document->mydocument="/storage/documents/default.pdf";
+        $document->categoryId=1;
         $document->save();
         $thesis = new Thesis();
         $thesis->defenseDate=carbon::now();
         $thesis->documentId=2;
         $thesis->save();
+
+        $authorsDocuments=new AuthorsDocuments();
+        $authorsDocuments->documentId=2;
+        $authorsDocuments->authorId=1;
+        $authorsDocuments->save();
+
+        $authorsDocuments=new AuthorsDocuments();
+        $authorsDocuments->documentId=2;
+        $authorsDocuments->authorId=2;
+        $authorsDocuments->save();
     }
 }

@@ -18,5 +18,10 @@ class AuthorsTableSeeder extends Seeder
         $author->name="Erik";
         $author->lastName="Reyes";
         $author->save();
+
+        $author = new Author();
+        $author->name="Jroge";
+        $author->lastName="Torrez";
+        $author->save();
     }
 }

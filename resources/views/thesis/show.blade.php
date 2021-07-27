@@ -21,19 +21,27 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <div class="card mb-3 border-dark" style="max-width: 540px;">
+                        <div class="card mb-3 border-dark">
                             <div class="row g-0">
-                                <div class="col-md-4">
-                                <img src="{{route('cover_Page',$thesis->id)}}" width="100%" height="100%">
+                                <div class="col-md-5">
+                                <img src="{{route('cover_Page',$thesis->documentId)}}" width="100%" height="100%">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="card-body">
                                         <h5 class="card-title">{{$thesis->title}}</h5>
+                                        @foreach($authors as $author)
+                                            <span class="badge rounded-pill bg-dark text-white">{{$author->name." ".$author->lastName}}</span>
+                                        @endforeach
+                                        <br>
+                                        <br>
                                         <p class="card-text">{{$thesis->description}}
                                         </p>
                                         <p class="card-text"><small class="text-muted">{{$thesis->year}}</small>
                                         </p>
-                                        <a href="{{$thesis->mydocument}}" target="_blank">ver documento</a>
+                                        <div class="row justify-content-around">
+                                            <a class="btn btn-primary" href="{{$thesis->mydocument}}" target="_blank">ver documento</a>
+                                            <a class="btn btn-primary" href="{{route('documents.download',$thesis->documentId)}}">descargar documento</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -46,13 +46,18 @@ Route::resource('categories',CategoryController::class);
 Route::resource('theses',ThesisController::class);
 Route::resource('notes',NoteController::class);
 Route::resource('books',BookController::class);
+Route::get('/documents/{id}/download',[App\Http\Controllers\DocumentController::class, 'download'])->name('documents.download');
 Route::get('/books/{id}/editorials',[App\Http\Controllers\BookController::class, 'editorialsIndex'])->name('books.editorials');
 Route::post('/books/{id}/editorials',[App\Http\Controllers\BookController::class, 'editorialsCreate'])->name('books.createEditorial');
 Route::delete('/books/{bookId}/editorials/{editorialId}',[App\Http\Controllers\BookController::class, 'editorialsDestroy'])->name('books.editorialsDestroy');
 
 Route::get('/cover_Page/{documentId}',[App\Http\Controllers\DocumentController::class, 'coverPage'])->name('cover_Page');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home2', [App\Http\Controllers\HomeController::class, 'index2'])->name('home2');
 Route::post('/myreg', [App\Http\Controllers\UserController::class, 'register'])->name('myreg');
+
+//vistas del usuario
+Route::get('/books_category/{categoryId}',[App\Http\Controllers\BookController::class, 'userIndex'])->name('books.user');
+Route::get('/home2', [App\Http\Controllers\HomeController::class, 'index2'])->name('home2');
+Route::get('/books_category_result', [App\Http\Controllers\HomeController::class, 'userResult'])->name('books.result');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

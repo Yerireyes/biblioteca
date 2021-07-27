@@ -7,16 +7,11 @@
             {!! $errors->first('title', '<div class="invalid-feedback">:message</p>') !!}
             <br>
 
-            {{ Form::label('Tipo') }}
-            {{ Form::text('type', $document->type, ['class' => 'form-control' . ($errors->has('type') ? ' is-invalid' : 'type'), 'placeholder' => 'Tipo']) }}
-            {!! $errors->first('type', '<div class="invalid-feedback">:message</p>') !!}
-            <br>
-
             {{ Form::label('Año') }}
             {{ Form::text('year', $document->year, ['class' => 'form-control' . ($errors->has('year') ? ' is-invalid' : 'year'), 'placeholder' => 'Año']) }}
             {!! $errors->first('year', '<div class="invalid-feedback">:message</p>') !!}
             <br>
-
+            {{ Form::label('Portada') }}
             <input type="file" name="coverPage" class="form-control-file">
             <br>
 
@@ -37,7 +32,36 @@
             {!! $errors->first('defenseDate', '<div class="invalid-feedback">:message</p>') !!}
 
             <br>
+            {{ Form::label('Archivo') }}
             <input type="file" name="mydocument" class="form-control-file">
+
+            <br>
+            @if(Route::currentRouteName()=="theses.create")
+            {{ Form::label('Autores') }}
+            <select id="options" class="form-select" aria-label="Default select example" name="authorId">
+                            <option selected disabled>Selecciona un Autor</option>
+                            @foreach($authors as $author)
+                            <option value="{{$author->id}}">{{$author->name." ".$author->lastName}}</option>
+                            @endforeach
+                            <!-- <option selected>Open this select menu</option> -->
+                        </select>
+            <br>
+            <div id="selected-options"></div>
+            <input type="hidden" name="authors-id" id="selectedOptionIds" value="">
+            <br>
+            @endif
+
+            {{ Form::label('Categoria') }}
+            <select class="form-select" aria-label="Default select example" name="categoryId">
+                            @foreach($categories as $category)
+                            @if($category->id==$thesis->categoryId)
+                            <option selected value="{{$category->id}}">{{$category->name}}</option>
+                            @else
+                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            @endif
+                            @endforeach
+                            <!-- <option selected>Open this select menu</option> -->
+                        </select>
         </div>
 
     </div>

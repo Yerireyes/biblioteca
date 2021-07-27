@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\Download;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Image;
+use Auth;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class DocumentController
@@ -166,5 +169,30 @@ class DocumentController extends Controller
          }catch(Exception $e){
             return Image::make(public_path(). "/imagenes/documents/1.jpg")->response('jpg');
          }
+    }
+
+    public function download($id){
+        $document=Document::find($id);
+        $document->downloadCounter++;
+        $document->save();
+        $user=Auth::user();
+        $download=Download::where([
+            ['userId',$user->id],
+            ['documentId',$id]
+        ])->first();
+        if (!$download){
+            $download=new Download();
+            $download->userId=$user->id;
+            $download->documentId=$id;
+            $download->count=0;
+        }
+        $download->count++;
+        $download->save();
+        $pieces = explode("/", $document->mydocument);
+        $documentPath="/public/".$pieces[2]."/".$pieces[3];
+        $pieces=explode(".",$pieces[3]);
+        $extension=$pieces[1];
+        return Storage::download($documentPath, $document->title.".".$extension);
+
     }
 }

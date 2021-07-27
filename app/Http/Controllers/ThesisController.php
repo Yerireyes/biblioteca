@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Thesis;
 use App\Models\Document;
+use App\Models\Category;
+use App\Models\Author;
+use App\Models\AuthorsDocuments;
 use Carbon\Carbon;
 use DB;
 use Image;
@@ -35,7 +38,9 @@ class ThesisController extends Controller
     {
         $thesis = new Thesis();
         $document = new Document();
-        return view('thesis.create',compact('thesis','document'));
+        $categories = Category::all();
+        $authors = Author::all();
+        return view('thesis.create',compact('thesis','document','categories','authors'));
     }
 
     /**
@@ -54,7 +59,7 @@ class ThesisController extends Controller
         $document->coverPage="/imagenes/documents/perrito.jpg";
         $document->uploadDate=Carbon::now();
         $document->downloadCounter=0;
-        $document->type=$request['type'];
+        $document->type="L";
         $document->counterLikes=0;
         $document->counterDislikes=0;
         $document->description=$request['description'];
@@ -62,6 +67,7 @@ class ThesisController extends Controller
         $path = $request->file('mydocument')->store('public/documents');
         $pieces = explode("/", $path);
         $document->mydocument="/storage/documents/".$pieces[2];
+        $document->categoryId=$request['categoryId'];
         $document->save();
         try{
             if($request->hasFile('coverPage')){
@@ -79,7 +85,14 @@ class ThesisController extends Controller
         $thesis->defenseDate=$request['defenseDate'];
         $thesis->documentId=$document->id;
         $thesis->save();
-        
+        $authors=$request['authors-id'];
+        $pieces = explode("-", $authors);
+        for ($i=1; $i < count($pieces) ; $i++) { 
+            $authorsDocuments=new AuthorsDocuments();
+            $authorsDocuments->authorId=$pieces[$i];
+            $authorsDocuments->documentId=$document->id;
+            $authorsDocuments->save();
+        }
         return $this->index();
         
     }
@@ -97,7 +110,12 @@ class ThesisController extends Controller
             ->join('documents', 'theses.documentId', '=', 'documents.id')
             ->select('theses.*', 'documents.*')
             ->first();
-        return view('thesis.show',compact('thesis'));
+
+        $authors = Author::
+            join('authors_documents', 'authors_documents.authorId', '=', 'authors.id')
+            ->where('authors_documents.documentId',$thesis->documentId)
+            ->get();
+        return view('thesis.show',compact('thesis','authors'));
     }
 
     /**
@@ -110,7 +128,8 @@ class ThesisController extends Controller
     {
         $thesis = Thesis::find($id);
         $document = Document::find($thesis->documentId);
-        return view('thesis.edit',compact('thesis','document'));
+        $categories = Category::all();
+        return view('thesis.edit',compact('thesis','document','categories'));
     }
 
     /**
@@ -129,7 +148,6 @@ class ThesisController extends Controller
         // request()->validate(Document::$rules);
         $document->year=$request['year'];
         $document->title=$request['title'];
-        $document->type=$request['type'];
         $document->description=$request['description'];
         $document->pages=$request['pages'];
         try{
@@ -143,9 +161,12 @@ class ThesisController extends Controller
         }catch(Exception $e){
             throw AuthController::newError("coverPage","Tipo de archivo no soportado.");
         }
-        $path = $request->file('mydocument')->store('public/documents');
-        $pieces = explode("/", $path);
-        $document->mydocument="/storage/documents/".$pieces[2];
+        if($request->hasFile('mydocument')){
+            $path = $request->file('mydocument')->store('public/documents');
+            $pieces = explode("/", $path);
+            $document->mydocument="/storage/documents/".$pieces[2];
+        }
+        $document->categoryId=$request['categoryId'];
         $document->save();
         
         return $this->index();

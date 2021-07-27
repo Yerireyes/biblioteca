@@ -74,7 +74,7 @@ i { margin: 0 7px; }
     font-weight: bold;
 }
 #sidebar ul li a:hover {
-    color: #6240bd;
+    /* color: #6240bd; */
     background: #fff; /*fondo de cada cuadrito*/
     text-decoration: none;
 }
@@ -82,7 +82,7 @@ i { margin: 0 7px; }
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #292F33;
-    background: #8a5fff;
+    /* background: #8a5fff; */
 }
 a[data-toggle="collapse"] {
     position: relative;
