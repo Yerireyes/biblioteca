@@ -182,6 +182,7 @@ class BookController extends Controller
             $pieces = explode("/", $path);
             $document->mydocument="/storage/documents/".$pieces[2];
         }
+        $document->type='L';
         $document->save();
         
         return $this->index();
