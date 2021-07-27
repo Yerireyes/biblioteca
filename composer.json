@@ -6,14 +6,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "ext-gd": " *",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "dev-master",
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
-        "intervention/image": "dev-master",
-        "ext-gd":" *"
+        "laravelcollective/html": "^6.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
