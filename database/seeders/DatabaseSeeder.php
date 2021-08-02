@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             ManagementsTableSeeder::class,
             ThesesTableSeeder::class,
             EditorialsTableSeeder::class,
-            BooksTableSeeder::class
+            BooksTableSeeder::class,
+            ForumsTableSeeder::class
             ]);
     }
 }

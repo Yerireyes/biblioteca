@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\Download;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Image;
@@ -211,5 +212,44 @@ class DocumentController extends Controller
         $extension=$pieces[1];
         return response()->file('storage/'.$documentPath);
         
+    }
+
+    public function like($id){
+        $like=Like::where([
+            ['documentId',$id],
+            ['userId',Auth::id()]
+          ])->first();
+        if (!$like) {
+            $like=new Like();
+        }
+        
+        $like->like=1;
+        $like->userId=Auth::id();
+        $like->documentId=$id;
+        $like->save();
+        return redirect()->back();
+    }
+
+    public function deleteLike($id){
+        Like::where([
+            ['documentId',$id],
+            ['userId',Auth::id()]
+          ])->delete();
+        return redirect()->back();
+    }
+
+    public function disLike($id){
+        $like=Like::where([
+            ['documentId',$id],
+            ['userId',Auth::id()]
+          ])->first();
+        if (!$like) {
+            $like=new Like();
+        }
+        $like->like=0;
+        $like->userId=Auth::id();
+        $like->documentId=$id;
+        $like->save();
+        return redirect()->back();
     }
 }

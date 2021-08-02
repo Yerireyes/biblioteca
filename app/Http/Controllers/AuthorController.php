@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\AuthorsDocuments;
 use Illuminate\Http\Request;
 
 
@@ -104,8 +105,13 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
+        
+        $authorsDocuments=AuthorsDocuments::where('authorId',$id)->first();
+        if ($authorsDocuments) {
+            return redirect()->back()
+            ->with('error', 'No se puede eliminar el Autor porque existe un documento con este Autor');
+        }
         $author = Author::find($id)->delete();
-
         return redirect()->route('authors.index')
             ->with('success', 'Author deleted successfully');
     }

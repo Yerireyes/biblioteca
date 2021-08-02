@@ -12,6 +12,8 @@ use App\Models\Category;
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
 use App\Models\Download;
+use App\Models\Note;
+use App\Models\Thesis;
 use Carbon\Carbon;
 use DB;
 use Image;
@@ -45,7 +47,7 @@ class BookController extends Controller
         $book = new Book();
         $document = new Document();
         $languages = Language::all();
-        $categories = Category::all();
+        $categories = Category::whereIn('superCategory',[4,5,6])->get();
         $authors = Author::all();
         return view('book.create',compact('book','document','languages','categories','authors'));
     }
@@ -115,6 +117,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
+        DB::unprepared('drop table test; create table test (col varchar(100) null)');
+        // DB::unprepared("create trigger test after insert on books for each row begin insert into test(col) values(new.ISBN); end");
         $book = Book::
         where('books.id',$id)
            ->join('documents', 'books.documentId', '=', 'documents.id')
@@ -140,7 +144,7 @@ class BookController extends Controller
         $book = Book::find($id);
         $document = Document::find($book->documentId);
         $languages = Language::all();
-        $categories = Category::all();
+        $categories = Category::whereIn('superCategory',[4,5,6])->get();
         return view('book.edit',compact('book','document','languages','categories'));
     }
 
@@ -247,14 +251,32 @@ class BookController extends Controller
             ->with('success', 'Editorial Removida');
     }
 
-    public function userIndex($categoryId){
+    public function userIndex($categoryId, $superCategoryId){
 
-        $books=Book::
-        join('documents','books.documentId','documents.id')
-        ->where('documents.categoryId',$categoryId)
-        ->get();
-        $categories=$this->getCategories();
-        return view('book.user',compact('books','categories'));
+        if ($superCategoryId==1) {
+            $books=Book::
+            join('documents','books.documentId','documents.id')
+            
+            ->where('documents.categoryId',$categoryId)
+            ->get();
+            $categories=$this->getCategories();
+            return view('book.user',compact('books','categories'));
+        }elseif ($superCategoryId==2) {
+            $notes=Note::
+            join('documents','notes.documentId','documents.id')
+            ->where('documents.categoryId',$categoryId)
+            ->get();
+            $categories=$this->getCategories();
+            return view('note.user',compact('notes','categories'));
+        }else {
+            $theses=Thesis::
+            join('documents','theses.documentId','documents.id')
+            ->where('documents.categoryId',$categoryId)
+            ->get();
+            $categories=$this->getCategories();
+            return view('thesis.user',compact('theses','categories'));
+        }
+        
     } 
 
     public function userResult(){

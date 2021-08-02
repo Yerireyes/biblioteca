@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
         $user->username="Yerireyes";
         $user->email="down@hotmail.com";
         $user->password=bcrypt("12345678");
-        $user->profilePicture="abc";
+        $user->profilePicture="/imagenes/users/default.jpg";
         $user->roleid="1";
         $user->save();
 
@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
         $user->username="P3J1";
         $user->email="mauricio@gmail.com";
         $user->password=bcrypt("12345678");
-        $user->profilePicture="abc";
+        $user->profilePicture="/imagenes/users/default.jpg";
         $user->roleid="1";
         $user->save();
 
@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
         $user->username="Pam";
         $user->email="pam@gmail.com";
         $user->password=bcrypt("12345678");
-        $user->profilePicture="abc";
+        $user->profilePicture="/imagenes/users/default.jpg";
         $user->roleid="1";
         $user->save();
 
@@ -46,7 +46,7 @@ class UsersTableSeeder extends Seeder
         $user->username="jpceci";
         $user->email="cecilia@gmail.com";
         $user->password=bcrypt("12345678");
-        $user->profilePicture="abc";
+        $user->profilePicture="/imagenes/users/default.jpg";
         $user->roleid="1";
         $user->save();
 
@@ -55,7 +55,7 @@ class UsersTableSeeder extends Seeder
         $user->username="Cat";
         $user->email="kiracata@hotmail.com";
         $user->password=bcrypt("12345678");
-        $user->profilePicture="abc";
+        $user->profilePicture="/imagenes/users/default.jpg";
         $user->roleid="1";
         $user->save();
 

@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subject;
+use App\Models\Note;
+use App\Models\Document;
+use App\Models\Download;
+use App\Models\AuthorsDocuments;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -103,8 +107,16 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
+       
+        $notes = Note::where('subjectId',$id)->get();
+        foreach ($notes as $note) {
+            $document = Document::find($note->documentId);
+            $note->delete();
+            AuthorsDocuments::where('documentId',$document->id)->delete();
+            Download::where('documentId',$document->id)->delete();
+            $document->delete();
+        }
         $subject = Subject::find($id)->delete();
-
         return redirect()->route('subjects.index')
             ->with('success', 'Subject deleted successfully');
     }

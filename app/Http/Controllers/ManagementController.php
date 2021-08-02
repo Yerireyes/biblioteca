@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Management;
+use App\Models\Note;
+use App\Models\Document;
+use App\Models\Download;
+use App\Models\AuthorsDocuments;
 use Illuminate\Http\Request;
 
 class ManagementController extends Controller
@@ -102,6 +106,14 @@ class ManagementController extends Controller
      */
     public function destroy($id)
     {
+        $notes = Note::where('managementId',$id)->get();
+        foreach ($notes as $note) {
+            $document = Document::find($note->documentId);
+            $note->delete();
+            AuthorsDocuments::where('documentId',$document->id)->delete();
+            Download::where('documentId',$document->id)->delete();
+            $document->delete();
+        }
         $management = Management::find($id)->delete();
 
         return redirect()->route('managements.index')

@@ -41,7 +41,7 @@
                                         <p class="card-text">{{$book->languageName($book->languageId)}}
                                         </p>
                                         <div class="row justify-content-around">
-                                            <a class="btn btn-primary" href="{{route('documents.show',$book->documentId)}}" target="_blank">ver documento</a>
+                                            <a class="btn btn-primary" href="{{$book->mydocument}}" target="_blank">ver documento</a>
                                             <a class="btn btn-primary" href="{{route('documents.download',$book->documentId)}}">descargar documento</a>
                                         </div>
                                        

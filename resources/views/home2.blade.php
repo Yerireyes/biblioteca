@@ -98,14 +98,14 @@
                                     href="#category-{{$subCategory['id']}}">{{$subCategory['name']}}</a>
                                     @else
                                     <a class="text-dark font-weight-bold" 
-                                    href="{{route('books.user',$subCategory['id'])}}">{{$subCategory['name']}}</a>
+                                    href="{{route('books.user',[$subCategory['id'],$category['id']])}}">{{$subCategory['name']}}</a>
                                     @endif
                                 <div class="collapse" id="category-{{$subCategory['id']}}">
                                     <ul class="justify-content-end list-unstyled components">
                                         @foreach($subCategory['subCategories'] as $subCategory2)
                                         <div class="row">
                                             <a class="text-dark font-weight-bold"
-                                                href="{{route('books.user',$subCategory2->id)}}">{{$subCategory2['name']}}</a>
+                                                href="{{route('books.user',[$subCategory2->id,$category['id']])}}">{{$subCategory2['name']}}</a>
                                         </div>
  
                                         @endforeach

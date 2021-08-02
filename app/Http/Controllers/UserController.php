@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use Auth;
+use Image;
 
 class UserController extends Controller
 {
@@ -102,5 +103,15 @@ class UserController extends Controller
         $user->save();
         return redirect()->route('users.index')
         ->with('success', 'Rol Cambiado de '.$user->fullName);
+    }
+
+    public function profilePicture($userId){
+        $user=User::find($userId);
+        $profilePicture=$user->profilePicture;
+        try{
+            return Image::make(public_path().$profilePicture)->response('jpg');
+         }catch(Exception $e){
+            return Image::make(public_path(). "/imagenes/users/1.jpg")->response('jpg');
+         }
     }
 }

@@ -14,6 +14,26 @@ class Document extends Model
     ];
 
     protected $fillable = ['title'];
+
+    public function meGusta($documentId){
+      $like=Like::where('documentId',$documentId)->first();
+      if ($like) {
+        if ($like->like) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    public function noMeGusta($documentId){
+      $like=Like::where('documentId',$documentId)->first();
+      if ($like) {
+        if (!$like->like) {
+          return true;
+        }
+      }
+      return false;
+    }
 }
 
 

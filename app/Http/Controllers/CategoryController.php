@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Document;
 
 class CategoryController extends Controller
 {
@@ -102,9 +103,46 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id)->delete();
-
+        $category = Category::find($id);
+        $document = Document::where('categoryId',$id)->first();
+        
+        if ($document || $id<7 || $this->buscarSubCategoria($id)) {
+            return redirect()->back()
+            ->with('error', 'No se puede Eliminar porque existen libros que pertenecen a esta categoria');
+        }
+        $this->categoryDeleteRec($id);
+        $category->delete();
         return redirect()->route('categories.index')
             ->with('success', 'Categoria Eliminada Exitosamente');
+    }
+
+    public function categoryDeleteRec($categoryId){
+        $categories = Category::where('superCategory',$categoryId)->get();
+        foreach ($categories as $category) {
+            $aux=Category::where('superCategory',$category->id)->first();
+            if ($aux) {
+                $this->categoryDeleteRec($category->id);
+            }
+            $category->delete();
+        }
+    }
+
+    public function buscarSubCategoria($categoryId){
+        $categories = Category::where('superCategory',$categoryId)->get();
+        foreach ($categories as $category) {
+            $document=Document::where('categoryId',$category->id)->first();
+            if ($document) {
+                return true;
+            }
+            $aux=Category::where('superCategory',$category->id)->first();
+            if ($aux) {
+                $x=$this->buscarSubCategoria($category->id);
+                if ($x) {
+                    return true;
+                }
+            }
+        
+        }
+        return false;
     }
 }

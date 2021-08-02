@@ -10,6 +10,7 @@ use App\Models\Management;
 use App\Models\Category;
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
+use App\Models\Download;
 use Carbon\Carbon;
 use Exception;
 use DB;
@@ -43,7 +44,7 @@ class NoteController extends Controller
         $document = new Document();
         $subjects = Subject::all();
         $managements = Management::all();
-        $categories = Category::all();
+        $categories = Category::where('superCategory','2')->get();
         $authors = Author::all();
         return view('note.create',compact('note','document','subjects','managements','categories','authors'));
     }
@@ -136,7 +137,7 @@ class NoteController extends Controller
         $document = Document::find($note->documentId);
         $subjects = Subject::all();
         $managements = Management::all();
-        $categories = Category::all();
+        $categories = Category::where('superCategory','2')->get();
         return view('note.edit',compact('note','document','subjects','managements','categories'));
     }
 
@@ -193,6 +194,8 @@ class NoteController extends Controller
     {
         $note = Note::find($id);
         $document = Document::find($note->documentId);
+        Download::where("documentId", $note->documentId)->delete();
+        AuthorsDocuments::where("documentId", $note->documentId)->delete();
         $note->delete();
         $document->delete();
 

@@ -8,6 +8,7 @@ use App\Models\Document;
 use App\Models\Category;
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
+use App\Models\Download;
 use Carbon\Carbon;
 use DB;
 use Image;
@@ -128,7 +129,7 @@ class ThesisController extends Controller
     {
         $thesis = Thesis::find($id);
         $document = Document::find($thesis->documentId);
-        $categories = Category::all();
+        $categories = Category::where('superCategory','3')->get();
         return view('thesis.edit',compact('thesis','document','categories'));
     }
 
@@ -182,6 +183,8 @@ class ThesisController extends Controller
     {
         $thesis = Thesis::find($id);
         $document = Document::find($thesis->documentId);
+        Download::where("documentId", $thesis->documentId)->delete();
+        AuthorsDocuments::where("documentId", $thesis->documentId)->delete();
         $thesis->delete();
         $document->delete();
 

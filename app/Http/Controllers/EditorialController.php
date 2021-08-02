@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Editorial;
+use App\Models\BooksEditorials;
 use Illuminate\Http\Request;
 
 class EditorialController extends Controller
@@ -100,8 +101,8 @@ class EditorialController extends Controller
      */
     public function destroy($id)
     {
+        BooksEditorials::where('editorialId',$id)->delete();
         $editorial = Editorial::find($id)->delete();
-
         return redirect()->route('editorials.index')
             ->with('success', 'Editorial deleted successfully');
     }
