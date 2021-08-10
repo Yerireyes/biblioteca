@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
 use App\Models\Download;
+use App\Models\Log;
 use Carbon\Carbon;
 use DB;
 use Image;
@@ -169,7 +170,7 @@ class ThesisController extends Controller
         }
         $document->categoryId=$request['categoryId'];
         $document->save();
-        
+        Log::guardar($thesis->id,'Edito una Tesis');
         return $this->index();
     }
 
@@ -187,7 +188,7 @@ class ThesisController extends Controller
         AuthorsDocuments::where("documentId", $thesis->documentId)->delete();
         $thesis->delete();
         $document->delete();
-
+        Log::guardar($id,'Elimino una Tesis');
         return redirect()->route('theses.index')
             ->with('success', 'Tesis Eliminada con exito');
     }

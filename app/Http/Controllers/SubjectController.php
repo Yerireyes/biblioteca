@@ -7,6 +7,7 @@ use App\Models\Note;
 use App\Models\Document;
 use App\Models\Download;
 use App\Models\AuthorsDocuments;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -50,7 +51,7 @@ class SubjectController extends Controller
         $subject->save();
 
         // $subject = Subject::create($request->all());
-
+        Log::guardar($subject->id,'Creo una Materia');
         return redirect()->route('subjects.index')
             ->with('success', 'Materia creada con exito.');
     }
@@ -95,7 +96,7 @@ class SubjectController extends Controller
         request()->validate(Subject::$rules);
 
         $subject->update($request->all());
-
+        Log::guardar($subject->id,'Edito una Materia');
         return redirect()->route('subjects.index')
             ->with('success', 'Subject updated successfully');
     }
@@ -117,6 +118,7 @@ class SubjectController extends Controller
             $document->delete();
         }
         $subject = Subject::find($id)->delete();
+        Log::guardar($id,'Elimino una Materia');
         return redirect()->route('subjects.index')
             ->with('success', 'Subject deleted successfully');
     }

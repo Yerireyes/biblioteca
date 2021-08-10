@@ -52,6 +52,7 @@ Route::get('/documents/{id}/download',[App\Http\Controllers\DocumentController::
 Route::get('/documents_like/{id}',[App\Http\Controllers\DocumentController::class, 'like'])->name('document.like');
 Route::get('/documents_disLike/{id}',[App\Http\Controllers\DocumentController::class, 'disLike'])->name('document.disLike');
 Route::get('/documents_deleteLike/{id}',[App\Http\Controllers\DocumentController::class, 'deleteLike'])->name('document.deleteLike');
+Route::get('/documents_deleteDislike/{id}',[App\Http\Controllers\DocumentController::class, 'deleteDislike'])->name('document.deleteDislike');
 Route::get('/documents/{id}/show_Document',[App\Http\Controllers\DocumentController::class, 'showDocument'])->name('documents.show');
 Route::get('/books/{id}/editorials',[App\Http\Controllers\BookController::class, 'editorialsIndex'])->name('books.editorials');
 Route::post('/books/{id}/editorials',[App\Http\Controllers\BookController::class, 'editorialsCreate'])->name('books.createEditorial');
@@ -76,5 +77,10 @@ Route::post('/comment_update/{id}',[App\Http\Controllers\CommentController::clas
 Route::post('/forum',[App\Http\Controllers\ForumController::class, 'store'])->name('forums.store');
 Route::put('/forum/{id}',[App\Http\Controllers\ForumController::class, 'update'])->name('forums.update');
 Route::post('/comment',[App\Http\Controllers\ForumController::class, 'commentStore'])->name('comments.create');
+Route::get('/profile/{id}',[App\Http\Controllers\UserController::class,'editProfile'])->name('user.profile');
+Route::get('/configuraciones',[App\Http\Controllers\UserController::class,'configuraciones'])->name('user.configurations');
+Route::get('/password',[App\Http\Controllers\UserController::class,'password'])->name('user.password');
+Route::post('/password_guardar',[App\Http\Controllers\UserController::class,'passwordGuardar'])->name('user.passwordGuardar');
+Route::post('/configuraciones',[App\Http\Controllers\UserController::class,'configuracionesGuardar'])->name('user.update');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

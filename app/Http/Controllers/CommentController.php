@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\Log;
 
 class CommentController extends Controller
 {
@@ -72,6 +73,7 @@ class CommentController extends Controller
         $comment=Comment::find($id);
         $comment->content=$request['content'];
         $comment->save();
+        Log::guardar($comment->id,'Edito un Comentario');
         return redirect()->back();
     }
 
@@ -85,6 +87,7 @@ class CommentController extends Controller
     {
         Comment::where('superCommentId',$id)->delete();
         Comment::find($id)->delete();
+        Log::guardar($id,'Elimino un Comentario');
         return redirect()->back();
     }
 }

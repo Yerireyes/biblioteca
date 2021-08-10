@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Log;
 use Auth;
 use Image;
 
@@ -52,6 +53,7 @@ class UserController extends Controller
         $user->roleid="2";
         $user->save();
         // return view("auth.login");
+        Log::guardar($user->id,'Creo un Usuario');
         return redirect('login');
     }
 
@@ -65,7 +67,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id)->delete();
-
+        Log::guardar($id,'Elimino un Usuario');
         return redirect()->route('users.index')
             ->with('success', 'User deleted successfully');
     }
@@ -101,6 +103,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->roleid=$request['roleid'];
         $user->save();
+        Log::guardar($user->id,'Edito el Rol de un Usuario');
         return redirect()->route('users.index')
         ->with('success', 'Rol Cambiado de '.$user->fullName);
     }
@@ -113,5 +116,56 @@ class UserController extends Controller
          }catch(Exception $e){
             return Image::make(public_path(). "/imagenes/users/1.jpg")->response('jpg');
          }
+    }
+
+    public function editProfile($id){
+        $user=User::find($id);
+        
+        return view('user.profile',compact('user'));
+    }
+
+    public function configuraciones(){
+        $user=Auth::user();
+        return view('user.config',compact('user'));
+    }
+
+    public function configuracionesGuardar(Request $request){
+        $user=User::find(Auth::id());
+        $user->fullName=$request['fullName'];
+        $user->username=$request['username'];
+        $user->email=$request['email'];
+        if($request->hasFile('profilePicture')){
+            $profilePicture=$request->profilePicture;
+            $image=Image::make($profilePicture);
+            $image->resize(300,300);
+            $image->save(public_path()."/imagenes/users/$user->id.jpg");
+            $user->profilePicture="/imagenes/users/$user->id.jpg";
+        }
+        $user->save();
+        return redirect()->route('user.profile',Auth::id());
+    }
+
+    public function password(){
+        return view('user.password');
+    }
+
+    public function passwordGuardar(Request $request){
+        $request['email']=Auth::user()->email;
+        $request->validate([
+            'oldpassword' => ['required','confirmed','min:8']
+        ]);
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+           $user=User::find(Auth::id());
+           $user->password=bcrypt($request['oldpassword']);
+           $user->save();
+        }else {
+            return redirect()->back()->with('errors','Contraseña Incorrecta');
+        }
+        return redirect()->route('user.profile',Auth::id());
     }
 }

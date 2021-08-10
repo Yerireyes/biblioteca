@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 /**
@@ -48,7 +49,7 @@ class RolController extends Controller
             'roleName'=>['unique:roles']
         ]);
         $rol = Role::create($request->all());
-
+        Log::guardar($rol->id,'Creo un Rol');
         return redirect()->route('roles.index')
             ->with('success', 'Role created successfully.');
     }
@@ -95,7 +96,7 @@ class RolController extends Controller
             'roleName'=>['unique:roles']
         ]);
         $rol->update($request->all());
-        
+        Log::guardar($rol->id,'Edito un Rol');
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully');
     }
@@ -108,7 +109,7 @@ class RolController extends Controller
     public function destroy($id)
     {
         $rol = Role::find($id)->delete();
-
+        Log::guardar($id,'Elimino un Rol');
         return redirect()->route('roles.index')
             ->with('success', 'Role deleted successfully');
     }

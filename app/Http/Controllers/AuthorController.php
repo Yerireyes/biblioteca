@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 
@@ -48,7 +49,7 @@ class AuthorController extends Controller
         $author->save();
 
         // $author = Author::create($request->all());
-
+        Log::guardar($author->id,'Creo un Autor');
         return redirect()->route('authors.index')
             ->with('success', 'Autor creado con exito.');
     }
@@ -93,7 +94,7 @@ class AuthorController extends Controller
         request()->validate(Author::$rules);
 
         $author->update($request->all());
-
+        Log::guardar($author->id,'Edito un Autor');
         return redirect()->route('authors.index')
             ->with('success', 'Author updated successfully');
     }
@@ -112,6 +113,7 @@ class AuthorController extends Controller
             ->with('error', 'No se puede eliminar el Autor porque existe un documento con este Autor');
         }
         $author = Author::find($id)->delete();
+        Log::guardar($id,'Elimino un Autor');
         return redirect()->route('authors.index')
             ->with('success', 'Author deleted successfully');
     }

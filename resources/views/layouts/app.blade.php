@@ -57,8 +57,8 @@
                 @endif
                 @else
                 <li class="nav-item dropdown text-white">
-                    <a id="navbarDropdown" class="nav-link text-white" color=whitehref="#" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link text-white" color="white" href="/profile/{{Auth::id()}}" role="button"
+                        aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->username }}
                     </a>
                 <li class="nav-item active">
@@ -78,6 +78,7 @@
     <div class="wrapper fixed-left">
         @guest
         @else
+        @if('user.profile'!=Route::currentRouteName() && 'user.configurations'!=Route::currentRouteName() && 'user.password'!=Route::currentRouteName())
         <nav id="sidebar">
             <div class="sidebar-header">
                 <h3><i class="fas fa-user"></i>Administrador</h3>
@@ -125,6 +126,7 @@
                 </li>
             </ul>
         </nav>
+        @endif
         @endguest
         <div id="content">
             <main class="py-4">

@@ -219,14 +219,22 @@ class DocumentController extends Controller
             ['documentId',$id],
             ['userId',Auth::id()]
           ])->first();
+        $document=Document::find($id);
         if (!$like) {
             $like=new Like();
+        }else {
+            if ($like->like==0) {        
+                $document->counterDislikes--;
+            }
         }
+        
         
         $like->like=1;
         $like->userId=Auth::id();
         $like->documentId=$id;
         $like->save();
+        $document->counterLikes++;
+        $document->save();
         return redirect()->back();
     }
 
@@ -235,6 +243,19 @@ class DocumentController extends Controller
             ['documentId',$id],
             ['userId',Auth::id()]
           ])->delete();
+        $document=Document::find($id);
+        $document->counterLikes--;
+        $document->save();
+        return redirect()->back();
+    }
+    public function deleteDislike($id){
+        Like::where([
+            ['documentId',$id],
+            ['userId',Auth::id()]
+          ])->delete();
+        $document=Document::find($id);
+        $document->counterDislikes--;
+        $document->save();
         return redirect()->back();
     }
 
@@ -246,10 +267,16 @@ class DocumentController extends Controller
         if (!$like) {
             $like=new Like();
         }
+        $document=Document::find($id);
+        if ($like->like==1) {        
+            $document->counterLikes--;
+        }
         $like->like=0;
         $like->userId=Auth::id();
         $like->documentId=$id;
         $like->save();
+        $document->counterDislikes++;
+        $document->save();
         return redirect()->back();
     }
 }

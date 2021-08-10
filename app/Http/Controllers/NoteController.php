@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
 use App\Models\Download;
+use App\Models\Log;
 use Carbon\Carbon;
 use Exception;
 use DB;
@@ -178,7 +179,7 @@ class NoteController extends Controller
             $pieces = explode("/", $path);
             $document->mydocument="/storage/documents/".$pieces[2];
         }
-        
+        Log::guardar($note->id,'Edito un Apunte');
         $document->save();
         
         return $this->index();
@@ -198,7 +199,7 @@ class NoteController extends Controller
         AuthorsDocuments::where("documentId", $note->documentId)->delete();
         $note->delete();
         $document->delete();
-
+        Log::guardar($id,'Elimino un Apunte');
         return redirect()->route('theses.index')
             ->with('success', 'Apunte Eliminado con exito');
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Document;
+use App\Models\Log;
 
 class CategoryController extends Controller
 {
@@ -47,6 +48,7 @@ class CategoryController extends Controller
         $category->name=$request['name'];
         $category->superCategory=$request['superCategory'];
         $category->save();
+        Log::guardar($category->id,'Creo una Categoria');
         return redirect()->route('categories.index')
             ->with('success', 'Categoria creada con exito.');
     }
@@ -90,7 +92,7 @@ class CategoryController extends Controller
         request()->validate(Category::$rules);
 
         $category->update($request->all());
-
+        Log::guardar($category->id,'Edito una Categoria');
         return redirect()->route('categories.index')
             ->with('success', 'Categoria Editada Exitosamente');
     }
@@ -112,6 +114,7 @@ class CategoryController extends Controller
         }
         $this->categoryDeleteRec($id);
         $category->delete();
+        Log::guardar($id,'Elimino una Categoria');
         return redirect()->route('categories.index')
             ->with('success', 'Categoria Eliminada Exitosamente');
     }

@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="p-0 float-right">
                                         @if($book->noMeGusta($book->documentId))
-                                        <a href="{{route('document.deleteLike',$book->documentId)}}">
+                                        <a href="{{route('document.deleteDislike',$book->documentId)}}">
                                             <img src="https://img.icons8.com/ios-filled/35/000000/thumbs-down.png"/>
                                         </a>
                                         @else

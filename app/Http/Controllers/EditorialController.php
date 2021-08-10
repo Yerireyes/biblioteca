@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Editorial;
+use App\Models\Log;
 use App\Models\BooksEditorials;
 use Illuminate\Http\Request;
 
@@ -44,7 +45,7 @@ class EditorialController extends Controller
 
 
         $editorial = Editorial::create($request->all());
-
+        Log::guardar($editorial->id,'Creo una Editorial');
         return redirect()->route('editorials.index')
             ->with('success', 'Editorial creada con exito.');
     }
@@ -89,7 +90,7 @@ class EditorialController extends Controller
         request()->validate(Editorial::$rules);
 
         $editorial->update($request->all());
-
+        Log::guardar($editorial->id,'Edito una Editorial');
         return redirect()->route('editorials.index')
             ->with('success', 'Editorial updated successfully');
     }
@@ -103,6 +104,7 @@ class EditorialController extends Controller
     {
         BooksEditorials::where('editorialId',$id)->delete();
         $editorial = Editorial::find($id)->delete();
+        Log::guardar($id,'Elimino una Editorial');
         return redirect()->route('editorials.index')
             ->with('success', 'Editorial deleted successfully');
     }

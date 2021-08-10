@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Language;
 use Illuminate\Http\Request;
+use App\Models\Log;
 
 class LanguageController extends Controller
 {
@@ -45,7 +46,7 @@ class LanguageController extends Controller
         $language->save();
 
         // $language = Language::create($request->all());
-
+        Log::guardar($language->id,'Creo un Idioma');
         return redirect()->route('languages.index')
             ->with('success', 'Idioma creado con exito.');
     }
@@ -72,7 +73,7 @@ class LanguageController extends Controller
     public function edit($id)
     {
         $language = Language::find($id);
-
+        
         return view('language.edit', compact('language'));
     }
 
@@ -90,7 +91,7 @@ class LanguageController extends Controller
         request()->validate(Language::$rules);
 
         $language->update($request->all());
-
+        Log::guardar($language->id,'Edito un Idioma');
         return redirect()->route('languages.index')
             ->with('success', 'Language updated successfully');
     }
@@ -103,7 +104,7 @@ class LanguageController extends Controller
     public function destroy($id)
     {
         $language = Language::find($id)->delete();
-
+        Log::guardar($id,'Elimino un Idioma');
         return redirect()->route('languages.index')
             ->with('success', 'Language deleted successfully');
     }

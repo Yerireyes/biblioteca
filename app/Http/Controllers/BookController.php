@@ -14,6 +14,7 @@ use App\Models\AuthorsDocuments;
 use App\Models\Download;
 use App\Models\Note;
 use App\Models\Thesis;
+use App\Models\Log;
 use Carbon\Carbon;
 use DB;
 use Image;
@@ -189,7 +190,7 @@ class BookController extends Controller
         }
         $document->type='L';
         $document->save();
-        
+        Log::guardar($book->id,'Edito un Libro');
         return $this->index();
     }
 
@@ -208,7 +209,7 @@ class BookController extends Controller
         BooksEditorials::where("bookId", $book->id)->delete();
         $book->delete();
         $document->delete();
-
+        Log::guardar($id,'Elimino un Libro');
         return redirect()->route('books.index')
             ->with('success', 'Libro Eliminado con exito');
     }
@@ -237,6 +238,7 @@ class BookController extends Controller
             return redirect()->back()->with('error', 'Editorial ya existe');
         }
         $booksEditorials->save();
+        
         return redirect()->back()->with('success', 'Editorial añadida');
     }
 

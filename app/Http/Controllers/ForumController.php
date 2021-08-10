@@ -7,6 +7,7 @@ use App\Models\Forum;
 use App\Models\Category;
 use App\Models\Document;
 use App\Models\Comment;
+use App\Models\Log;
 use Auth;
 use Image;
 
@@ -125,6 +126,7 @@ class ForumController extends Controller
         $forum->title=$request['title'];
         $forum->description=$request['description'];
         $forum->save();
+        Log::guardar($forum->id,'Edito un Foro');
         return $this->show($forum->id);
     }
 
@@ -140,6 +142,7 @@ class ForumController extends Controller
         $comments=Comment::where('forumId',$forum->id)->delete();
         $documentId=$forum->documentId;
         $forum->delete();
+        Log::guardar($id,'Elimino un Foro');
         return $this->index($documentId);
     }
 

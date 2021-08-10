@@ -7,6 +7,7 @@ use App\Models\Note;
 use App\Models\Document;
 use App\Models\Download;
 use App\Models\AuthorsDocuments;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class ManagementController extends Controller
@@ -49,7 +50,7 @@ class ManagementController extends Controller
         
 
         // $management = Management::create($request->all());
-
+        Log::guardar($management->id,'Creo una Gestion');
         return redirect()->route('managements.index')
             ->with('success', 'Semestre creado con exito.');
     }
@@ -94,7 +95,7 @@ class ManagementController extends Controller
         request()->validate(Management::$rules);
 
         $management->update($request->all());
-
+        Log::guardar($management->id,'Edito una Editorial');
         return redirect()->route('managements.index')
             ->with('success', 'Management updated successfully');
     }
@@ -115,7 +116,7 @@ class ManagementController extends Controller
             $document->delete();
         }
         $management = Management::find($id)->delete();
-
+        Log::guardar($id,'Creo una Editorial');
         return redirect()->route('managements.index')
             ->with('success', 'Management deleted successfully');
     }
