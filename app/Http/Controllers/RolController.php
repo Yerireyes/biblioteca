@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Log;
 use Illuminate\Http\Request;
+use Auth;
 
 /**
  * Class RolController
@@ -19,10 +20,11 @@ class RolController extends Controller
      */
     public function index()
     {
-        $rols = Role::paginate();
-
-        return view('rol.index', compact('rols'))
-            ->with('i', (request()->input('page', 1) - 1) * $rols->perPage());
+        $roles = Role::paginate();
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('rols.index', compact('roles','rol'))
+            ->with('i', (request()->input('page', 1) - 1) * $roles->perPage());
     }
 
     /**
@@ -32,8 +34,10 @@ class RolController extends Controller
      */
     public function create()
     {
-        $rol = new Role();
-        return view('rol.create', compact('rol'));
+        $rols = new Role();
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('rols.create', compact('rols','rol'));
     }
 
     /**
@@ -44,11 +48,23 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
+        $rol=new Role();
         request()->validate(Role::$rules);
         $request->validate([
             'roleName'=>['unique:roles']
         ]);
-        $rol = Role::create($request->all());
+        $rol->roleName=$request['roleName'];
+        $accions="";
+        for ($i=1; $i <= 19 ; $i++) { 
+            $accions=$accions.$request->input('accions'.$i);
+        
+        }
+        if ($accions=="") {
+            return redirect()->back()
+            ->with('error', 'Seleccione una opcion');
+        }
+        $rol->accion=$accions;
+        $rol->save();
         Log::guardar($rol->id,'Creo un Rol');
         return redirect()->route('roles.index')
             ->with('success', 'Role created successfully.');
@@ -62,9 +78,10 @@ class RolController extends Controller
      */
     public function show($id)
     {
-        $rol = Role::find($id);
-
-        return view('rol.show', compact('rol'));
+        $rols = Role::find($id);
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('rols.show', compact('rols','rol'));
     }
 
     /**
@@ -75,9 +92,10 @@ class RolController extends Controller
      */
     public function edit($id)
     {
-        $rol = Role::find($id);
-
-        return view('rol.edit', compact('rol'));
+        $rols = Role::find($id);
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('rols.edit', compact('rols','rol'));
     }
 
     /**
@@ -92,10 +110,18 @@ class RolController extends Controller
     {
         $rol = Role::find($id);
         request()->validate(Role::$rules);
-        $request->validate([
-            'roleName'=>['unique:roles']
-        ]);
-        $rol->update($request->all());
+        $rol->roleName=$request['roleName'];
+        $accions="";
+        for ($i=1; $i <= 19 ; $i++) { 
+            $accions=$accions.$request->input('accions'.$i);
+        
+        }
+        if ($accions=="") {
+            return redirect()->back()
+            ->with('error', 'Seleccione una opcion');
+        }
+        $rol->accion=$accions;
+        $rol->save();
         Log::guardar($rol->id,'Edito un Rol');
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully');

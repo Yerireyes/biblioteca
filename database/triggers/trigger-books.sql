@@ -25,7 +25,7 @@ BEGIN
     declare newId int;
     set newId=(SELECT MAX(id) from logs);
     set newId=newId+1;
-    insert into logs values(newId,new.userId,new.id,'Hizo un Comentario',new.created_at,new.updated_at);
+    insert into logs values(newId,new.userId,new.id,'Realizo un Comentario',new.created_at,new.updated_at);
 END$$
 DELIMITER ;
 
@@ -116,7 +116,7 @@ BEGIN
     declare newId int;
     set newId=(SELECT MAX(id) from logs);
     set newId=newId+1;
-    insert into logs values(newId,'arreglar',new.id,'Creo un Foro',new.created_at, new.updated_at);
+    insert into logs values(newId, new.userId, new.id, 'Creo un Foro',new.created_at, new.updated_at);
 END$$
 DELIMITER ;
 
@@ -155,7 +155,7 @@ DELIMITER ;
 DELIMITER $$
 
 create trigger insert_download
-After insert on download
+After insert on downloads
 for each row
 BEGIN
     declare newId int;
@@ -442,6 +442,7 @@ create trigger insert_books
 After insert on books
 for each row
 BEGIN
+    declare 
     declare newId int;
     set newId=(SELECT MAX(id) from logs);
     set newId=newId+1;

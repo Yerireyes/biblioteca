@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('content')
-<a href="{{Auth::user()->roleid==1?'/home':'/home2'}}" class="btn btn-primary">Ir a Casa</a>
+<div class="float-right">
+    <a href="{{Auth::user()->roleid==1?'/home':'/home2'}}" class="btn btn-primary float-right"  data-placement="left">
+     {{ __('Volver Atras') }}
+    </a>
+ </div>
+<!-- <a href="{{Auth::user()->roleid==1?'/home':'/home2'}}" class="btn btn-primary">Ir a Casa</a> -->
 <div class="container-fluid mt-5 w-100">
     <div class="row my-3 w-100">
         <div class="col-4">
@@ -8,7 +13,7 @@
         </div>
         <div class="col align-self-center">
             <h3>
-                {{'@'.$user->username}}
+                {{$user->username}}
                 
             </h3>
         </div>

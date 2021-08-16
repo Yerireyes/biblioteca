@@ -22,7 +22,10 @@
                         
                         <div class="form-group">
                             <strong>Nombre:</strong>
-                            {{ $rol->roleName }}
+                            {{ $rols->roleName }}
+                            <br>
+                            <strong>Acciones:</strong>
+                            {{ $rols->accion }}
                         </div>
 
                     </div>

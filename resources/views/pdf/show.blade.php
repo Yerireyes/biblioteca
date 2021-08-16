@@ -22,7 +22,7 @@
                         
                         <div class="form-group">
                             <strong>Nombre:</strong>
-                            {{ $language->name }}
+                            {{ $language->languageName }}
                         </div>
 
                     </div>

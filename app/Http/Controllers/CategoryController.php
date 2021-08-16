@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Document;
 use App\Models\Log;
+use App\Models\Role;
+use Auth;
 
 class CategoryController extends Controller
 {
@@ -17,8 +19,9 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-
-        return view('category.index', compact('categories'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('category.index', compact('categories','rol'));
     }
 
     /**
@@ -30,7 +33,9 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         $category = new Category();
-        return view('category.create', compact('category','categories'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('category.create', compact('category','categories','rol'));
     }
 
     /**
@@ -41,8 +46,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate(Category::$rules);
         $request->validate([
-            'name'=>['unique:categories']
+            'name'=>['unique:categories'],
         ]);
         $category = new Category();
         $category->name=$request['name'];
@@ -62,8 +68,9 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::find($id);
-
-        return view('category.show', compact('category'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('category.show', compact('category','rol'));
     }
 
     /**
@@ -75,8 +82,10 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::find($id);
-
-        return view('category.edit', compact('category'));
+        $categories = Category::all();
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('category.edit', compact('category','categories','rol'));
     }
 
     /**

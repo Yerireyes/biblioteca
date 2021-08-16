@@ -11,7 +11,11 @@ Editar Perfil
     <div class="">
         
         <div class="col-md-12">
-
+            <div class="card border-white">
+                <div class="float-right">
+                    <a href="{{ url()->previous() }}" class="btn btn-primary float-right">Volver</a>
+                </div>
+            </div>
             @includeif('partials.errors')
 
             @if ($message = Session::get('errors'))

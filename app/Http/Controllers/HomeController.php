@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\Category;
+use App\Models\Role;
+use Auth;
 use Image;
 
 class HomeController extends Controller
@@ -26,7 +28,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('home',compact('rol'));
     }
 
     public function index2()
@@ -53,7 +57,9 @@ class HomeController extends Controller
             ];
             array_push($categories, $myCategory);
         }
-        return view('home2',compact('categories'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('home2',compact('categories','rol'));
     }
     
     public function register(Request $request)

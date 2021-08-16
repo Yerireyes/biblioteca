@@ -8,7 +8,9 @@ use App\Models\Document;
 use App\Models\Download;
 use App\Models\AuthorsDocuments;
 use App\Models\Log;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Auth;
 
 class ManagementController extends Controller
 {
@@ -20,7 +22,9 @@ class ManagementController extends Controller
     public function index()
     {
         $managements = Management::paginate();
-        return view('management.index', compact('managements'))
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('management.index', compact('managements','rol'))
             ->with('i', (request()->input('page', 1) - 1) * $managements->perPage());
     }
 
@@ -32,7 +36,9 @@ class ManagementController extends Controller
     public function create()
     {
         $management = new Management();
-        return view('management.create', compact('management'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('management.create', compact('management','rol'));
     }
 
     /**
@@ -44,6 +50,9 @@ class ManagementController extends Controller
     public function store(Request $request)
     {
         request()->validate(Management::$rules);
+        $request->validate([
+            'name'=>['unique:managements']
+        ]);
         $management = new Management();
         $management->name=$request['name'];
         $management->save();
@@ -64,8 +73,9 @@ class ManagementController extends Controller
     public function show($id)
     {
         $management = Management::find($id);
-
-        return view('management.show', compact('management'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('management.show', compact('management','rol'));
     }
 
     /**
@@ -77,8 +87,9 @@ class ManagementController extends Controller
     public function edit($id)
     {
         $management = Management::find($id);
-
-        return view('management.edit', compact('management'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('management.edit', compact('management','rol'));
     }
 
     /**
@@ -93,7 +104,9 @@ class ManagementController extends Controller
     {
         $management = Management::find($id);
         request()->validate(Management::$rules);
-
+        $request->validate([
+            'name'=>['unique:managements']
+        ]);
         $management->update($request->all());
         Log::guardar($management->id,'Edito una Editorial');
         return redirect()->route('managements.index')

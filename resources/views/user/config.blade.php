@@ -11,10 +11,15 @@ Editar Perfil
     <div class="">
         
         <div class="col-md-12">
-
+            <div class="card border-white">
+                <div class="float-right">
+                    <a href="{{ url()->previous() }}" class="btn btn-primary float-right">Volver</a>
+                </div>
+            </div>
             @includeif('partials.errors')
-
+            
             <div class="card card-default">
+                
                 <div class="card-header">
                     <span class="card-title">Editar Perfil</span>
                 </div>

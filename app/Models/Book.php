@@ -8,7 +8,10 @@ use Auth;
 use App\Models\Like;
 class Book extends Model
 {
+
+
     use HasFactory;
+    
     public function languageName($languageId){
         return Language::find($languageId)->name;
     }

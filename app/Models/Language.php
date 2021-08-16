@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Language extends Model
 {
     use HasFactory;
+    
     static $rules = [
-		'languageName' => 'required',
+		'name' => 'required',
     ];
 
-    protected $fillable = ['languageName'];
+    protected $fillable = ['name'];
 }

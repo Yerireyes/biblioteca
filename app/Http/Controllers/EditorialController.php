@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Editorial;
 use App\Models\Log;
 use App\Models\BooksEditorials;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Auth;
 
 class EditorialController extends Controller
 {
@@ -17,8 +19,9 @@ class EditorialController extends Controller
     public function index()
     {
         $editorials = Editorial::paginate();
-
-        return view('editorial.index', compact('editorials'))
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('editorial.index', compact('editorials','rol'))
             ->with('i', (request()->input('page', 1) - 1) * $editorials->perPage());
     }
 
@@ -30,7 +33,9 @@ class EditorialController extends Controller
     public function create()
     {
         $editorial = new Editorial();
-        return view('editorial.create', compact('editorial'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('editorial.create', compact('editorial','rol'));
     }
 
     /**
@@ -42,7 +47,9 @@ class EditorialController extends Controller
     public function store(Request $request)
     {
         request()->validate(Editorial::$rules);
-
+        $request->validate([
+            'name'=>['unique:editorials']
+        ]);
 
         $editorial = Editorial::create($request->all());
         Log::guardar($editorial->id,'Creo una Editorial');
@@ -59,8 +66,9 @@ class EditorialController extends Controller
     public function show($id)
     {
         $editorial = Editorial::find($id);
-
-        return view('editorial.show', compact('editorial'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('editorial.show', compact('editorial','rol'));
     }
 
     /**
@@ -72,8 +80,9 @@ class EditorialController extends Controller
     public function edit($id)
     {
         $editorial = Editorial::find($id);
-
-        return view('editorial.edit', compact('editorial'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('editorial.edit', compact('editorial','rol'));
     }
 
     /**
@@ -88,7 +97,9 @@ class EditorialController extends Controller
     {
         $editorial = Editorial::find($id);
         request()->validate(Editorial::$rules);
-
+        $request->validate([
+            'name'=>['unique:editorials']
+        ]);
         $editorial->update($request->all());
         Log::guardar($editorial->id,'Edito una Editorial');
         return redirect()->route('editorials.index')

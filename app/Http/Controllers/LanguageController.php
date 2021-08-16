@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Language;
 use Illuminate\Http\Request;
 use App\Models\Log;
+use App\Models\Role;
+use Auth;
 
 class LanguageController extends Controller
 {
@@ -16,8 +18,9 @@ class LanguageController extends Controller
     public function index()
     {
         $languages = Language::paginate();
-
-        return view('language.index', compact('languages'))
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('language.index', compact('languages','rol'))
             ->with('i', (request()->input('page', 1) - 1) * $languages->perPage());
     }
 
@@ -29,7 +32,9 @@ class LanguageController extends Controller
     public function create()
     {
         $language = new Language();
-        return view('language.create', compact('language'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('language.create', compact('language','rol'));
     }
 
     /**
@@ -40,9 +45,12 @@ class LanguageController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Language::$rules);
         $language = new Language();
-        $language->name=$request['languageName'];
+        request()->validate(Language::$rules);
+        $request->validate([
+            'name'=>['unique:languages']
+        ]);
+        $language->name=$request['name'];
         $language->save();
 
         // $language = Language::create($request->all());
@@ -60,8 +68,9 @@ class LanguageController extends Controller
     public function show($id)
     {
         $language = Language::find($id);
-
-        return view('language.show', compact('language'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('language.show', compact('language','rol'));
     }
 
     /**
@@ -73,8 +82,9 @@ class LanguageController extends Controller
     public function edit($id)
     {
         $language = Language::find($id);
-        
-        return view('language.edit', compact('language'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('language.edit', compact('language','rol'));
     }
 
     /**
@@ -89,7 +99,9 @@ class LanguageController extends Controller
     {
         $language = Language::find($id);
         request()->validate(Language::$rules);
-
+        $request->validate([
+            'name'=>['unique:languages']
+        ]);
         $language->update($request->all());
         Log::guardar($language->id,'Edito un Idioma');
         return redirect()->route('languages.index')

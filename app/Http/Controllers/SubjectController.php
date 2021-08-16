@@ -8,7 +8,9 @@ use App\Models\Document;
 use App\Models\Download;
 use App\Models\AuthorsDocuments;
 use App\Models\Log;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Auth;
 
 class SubjectController extends Controller
 {
@@ -20,8 +22,9 @@ class SubjectController extends Controller
     public function index()
     {
         $subjects = Subject::paginate();
-
-        return view('subject.index', compact('subjects'))
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('subject.index', compact('subjects','rol'))
             ->with('i', (request()->input('page', 1) - 1) * $subjects->perPage());
     }
 
@@ -33,7 +36,9 @@ class SubjectController extends Controller
     public function create()
     {
         $subject = new Subject();
-        return view('subject.create', compact('subject'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('subject.create', compact('subject','rol'));
     }
 
     /**
@@ -45,6 +50,10 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         request()->validate(Subject::$rules);
+        $request->validate([
+            'name'=>['unique:subjects'],
+            'acronym'=>['unique:subjects']
+        ]);
         $subject = new Subject();
         $subject->name=$request['name'];
         $subject->acronym=$request['acronym'];
@@ -65,8 +74,9 @@ class SubjectController extends Controller
     public function show($id)
     {
         $subject = Subject::find($id);
-
-        return view('subject.show', compact('subject'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('subject.show', compact('subject','rol'));
     }
 
     /**
@@ -78,8 +88,9 @@ class SubjectController extends Controller
     public function edit($id)
     {
         $subject = Subject::find($id);
-
-        return view('subject.edit', compact('subject'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('subject.edit', compact('subject','rol'));
     }
 
     /**

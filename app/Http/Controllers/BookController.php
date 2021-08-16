@@ -15,9 +15,11 @@ use App\Models\Download;
 use App\Models\Note;
 use App\Models\Thesis;
 use App\Models\Log;
+use App\Models\Role;
 use Carbon\Carbon;
 use DB;
 use Image;
+use Auth;
 
 
 class BookController extends Controller
@@ -35,7 +37,9 @@ class BookController extends Controller
             ->select('languages.*','documents.*', 'books.*')
             ->orderBy('books.id','asc')
             ->get();
-        return view('book.index',compact('books'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('book.index',compact('books','rol'));
     }
 
     /**
@@ -50,7 +54,9 @@ class BookController extends Controller
         $languages = Language::all();
         $categories = Category::whereIn('superCategory',[4,5,6])->get();
         $authors = Author::all();
-        return view('book.create',compact('book','document','languages','categories','authors'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('book.create',compact('book','document','languages','categories','authors','rol'));
     }
 
     /**
@@ -107,6 +113,7 @@ class BookController extends Controller
             $authorsDocuments->documentId=$document->id;
             $authorsDocuments->save();
         }
+        Log::guardar($book->id,'Añadio un Libro');
         return $this->index();
     }
 
@@ -118,7 +125,7 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        DB::unprepared('drop table test; create table test (col varchar(100) null)');
+        // DB::unprepared('drop table test; create table test (col varchar(100) null)');
         // DB::unprepared("create trigger test after insert on books for each row begin insert into test(col) values(new.ISBN); end");
         $book = Book::
         where('books.id',$id)
@@ -131,7 +138,9 @@ class BookController extends Controller
         join('authors_documents', 'authors_documents.authorId', '=', 'authors.id')
         ->where('authors_documents.documentId',$book->documentId)
         ->get();
-        return view('book.show',compact('book','authors'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('book.show',compact('book','authors','rol'));
     }
 
     /**
@@ -146,7 +155,9 @@ class BookController extends Controller
         $document = Document::find($book->documentId);
         $languages = Language::all();
         $categories = Category::whereIn('superCategory',[4,5,6])->get();
-        return view('book.edit',compact('book','document','languages','categories'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('book.edit',compact('book','document','languages','categories','rol'));
     }
 
     /**
@@ -223,7 +234,9 @@ class BookController extends Controller
         $editorials=BooksEditorials::where('bookId',$id)
         ->join('editorials','books_editorials.editorialId','editorials.id')
         ->get();
-        return view('books_editorials.index',compact('editorials','editorialsAvailable','book'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('books_editorials.index',compact('editorials','editorialsAvailable','book','rol'));
     }
 
     public function editorialsCreate(Request $request, $id){
@@ -255,6 +268,8 @@ class BookController extends Controller
 
     public function userIndex($categoryId, $superCategoryId){
 
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
         if ($superCategoryId==1) {
             $books=Book::
             join('documents','books.documentId','documents.id')
@@ -262,21 +277,21 @@ class BookController extends Controller
             ->where('documents.categoryId',$categoryId)
             ->get();
             $categories=$this->getCategories();
-            return view('book.user',compact('books','categories'));
+            return view('book.user',compact('books','categories','rol'));
         }elseif ($superCategoryId==2) {
             $notes=Note::
             join('documents','notes.documentId','documents.id')
             ->where('documents.categoryId',$categoryId)
             ->get();
             $categories=$this->getCategories();
-            return view('note.user',compact('notes','categories'));
+            return view('note.user',compact('notes','categories','rol'));
         }else {
             $theses=Thesis::
             join('documents','theses.documentId','documents.id')
             ->where('documents.categoryId',$categoryId)
             ->get();
             $categories=$this->getCategories();
-            return view('thesis.user',compact('theses','categories'));
+            return view('thesis.user',compact('theses','categories','rol'));
         }
         
     } 

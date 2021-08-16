@@ -3,11 +3,11 @@
         
         <div class="form-group">
             {{ Form::label('Nombre') }}
-            {{ Form::text('name', $author->name, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''), 'placeholder' => 'Nombre']) }}
+            {{ Form::text('name', $author->name, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''), 'placeholder' => 'Nombre', 'autocomplete'=>'off']) }}
             {!! $errors->first('name', '<div class="invalid-feedback">:message</p>') !!}
             <br>
             {{ Form::label('Apellido') }}
-            {{ Form::text('lastName', $author->lastName, ['class' => 'form-control' . ($errors->has('lastName') ? ' is-invalid' : ''), 'placeholder' => 'Apellido']) }}
+            {{ Form::text('lastName', $author->lastName, ['class' => 'form-control' . ($errors->has('lastName') ? ' is-invalid' : ''), 'placeholder' => 'Apellido', 'autocomplete'=>'off']) }}
             {!! $errors->first('lastName', '<div class="invalid-feedback">:message</p>') !!}
         </div>
 

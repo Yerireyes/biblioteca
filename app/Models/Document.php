@@ -11,6 +11,9 @@ class Document extends Model
 
     static $rules = [
 		'title' => 'required',
+		'year' => 'required',
+		'pages' => 'required',
+		'mydocument' => 'required',
     ];
 
     protected $fillable = ['title'];

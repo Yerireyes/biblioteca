@@ -10,6 +10,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    static $rules=[
+        'name' => 'required'
+    ];
+    protected $fillable = ['name'];
     public function categoryName($superCategory) 
     {
         $category=Category::find($superCategory);

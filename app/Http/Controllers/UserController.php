@@ -29,8 +29,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate();
-
-        return view('user.index', compact('users'))
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('user.index', compact('users','rol'))
             ->with('i', (request()->input('page', 1) - 1) * $users->perPage());
     }
 
@@ -53,15 +54,20 @@ class UserController extends Controller
         $user->roleid="2";
         $user->save();
         // return view("auth.login");
-        Log::guardar($user->id,'Creo un Usuario');
+        $log=new Log();
+        $log->userId=$user->id;
+        $log->idMod=$user->id;
+        $log->description='Creo un Usuario';
+        $log->save();
         return redirect('login');
     }
 
     public function show($id)
     {
         $user = User::find($id);
-
-        return view('user.show', compact('user'));
+        $users=Auth::user();
+        $rol=Role::find($users->roleid);
+        return view('user.show', compact('user','rol'));
     }
 
     public function destroy($id)
@@ -82,6 +88,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $roleid = Auth::user()->roleid;
+            Log::guardar(Auth::id(),'Inicio Sesion');
             if ($roleid == 1) {
                 return redirect()->route('home'); 
             }
@@ -96,7 +103,9 @@ class UserController extends Controller
     public function edit($id){
         $user = User::find($id);
         $roles = Role::all();
-        return view('user.edit',compact('user','roles'));
+        $user2=Auth::user();
+        $rol=Role::find($user2->roleid);
+        return view('user.edit',compact('user','roles','rol'));
     }
 
     public function update(Request $request, $id){

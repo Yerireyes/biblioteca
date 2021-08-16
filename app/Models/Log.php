@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use App\Models\User;
 
 class Log extends Model
 {
@@ -16,5 +17,9 @@ class Log extends Model
         $log->idMod=$id;
         $log->description=$description;
         $log->save();
+    }
+
+    public function username($userId){
+        return User::find($userId)->username;
     }
 }

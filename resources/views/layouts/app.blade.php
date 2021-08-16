@@ -39,7 +39,6 @@
                 {{-- <li class="nav-item">
                     <a class="nav-link" id="link" href="/">
                         <i class="fas fa-id-card"></i>LogOut</a> --}}
-
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
@@ -85,45 +84,66 @@
             </div>
 
             <ul class="list-unstyled components">
+                @if(str_contains($rol->accion,'Usuarios'))
                 <li>
                     <a href="/users"><i class="fas fa-usua"></i>Usuarios</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Roles'))
                 <li>
                     <a href="/roles"><i class="fas fa-rol"></i>Rol</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Libros'))
                 <li>
                     <a href="/books"><i class="fas fa-docu"></i>Libros</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Apuntes'))
                 <li>
                     <a href="/notes"><i class="fas fa-docu"></i>Apuntes</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Tesis'))
                 <li>
                     <a href="/theses"><i class="fas fa-docu"></i>Tesis</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Editoriales'))
                 <li>
                     <a href="/editorials"><i class="fas fa-edito"></i>Editoriales</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Autores'))
                 <li>
                     <a href="/authors"><i class="fas fa-auto"></i>Autores</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Idiomas'))
                 <li>
                     <a href="/languages"><i class="fas fa-lol"></i>Idiomas</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Gestiones'))
                 <li>
                     <a href="/managements"><i class="fas fa-lol"></i>Gestion</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Materias'))
                 <li>
                     <a href="/subjects"><i class="fas fa-lol"></i>Materia</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Bitacora'))
                 <li>
-                    <a href="/home"><i class="fas fa-ikjds"></i>Bitacora</a>
+                    <a href="/logs"><i class="fas fa-ikjds"></i>Bitacora</a>
                 </li>
+                @endif
+                @if(str_contains($rol->accion,'Categorias'))
                 <li>
                     <a href="/categories"><i class="fas fa-ikjds"></i>Categoria</a>
                 </li>
-                <li>
-                    <a href="/home"><i class="fas fa-hdj"></i>Estadisticas</a>
-                </li>
+                @endif
             </ul>
         </nav>
         @endif

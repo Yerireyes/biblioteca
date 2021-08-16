@@ -3,12 +3,12 @@
         
         <div class="form-group">
             {{ Form::label('Titulo') }}
-            {{ Form::text('title', $document->title, ['class' => 'form-control' . ($errors->has('title') ? ' is-invalid' : 'title'), 'placeholder' => 'Titulo']) }}
+            {{ Form::text('title', $document->title, ['class' => 'form-control' . ($errors->has('title') ? ' is-invalid' : ''), 'placeholder' => 'Titulo', 'autocomplete'=>'off']) }}
             {!! $errors->first('title', '<div class="invalid-feedback">:message</p>') !!}
             <br>
 
             {{ Form::label('Año') }}
-            {{ Form::text('year', $document->year, ['class' => 'form-control' . ($errors->has('year') ? ' is-invalid' : 'year'), 'placeholder' => 'Año']) }}
+            {{ Form::text('year', $document->year, ['class' => 'form-control' . ($errors->has('year') ? ' is-invalid' : ''), 'placeholder' => 'Año', 'autocomplete'=>'off']) }}
             {!! $errors->first('year', '<div class="invalid-feedback">:message</p>') !!}
             <br>
 
@@ -18,18 +18,18 @@
 
 
             {{ Form::label('Descripcion') }}
-            {{ Form::text('description', $document->description, ['class' => 'form-control' . ($errors->has('description') ? ' is-invalid' : 'description'), 'placeholder' => 'Descripcion']) }}
+            {{ Form::textArea('description', $document->description, ['class' => 'form-control' . ($errors->has('description') ? ' is-invalid' : ''), 'placeholder' => 'Descripcion', 'autocomplete'=>'off']) }}
             {!! $errors->first('description', '<div class="invalid-feedback">:message</p>') !!}
             <br>
 
 
             {{ Form::label('Nro Paginas') }}
-            {{ Form::text('pages', $document->pages, ['class' => 'form-control' . ($errors->has('pages') ? ' is-invalid' : 'pages'), 'placeholder' => 'Nro Paginas']) }}
+            {{ Form::text('pages', $document->pages, ['class' => 'form-control' . ($errors->has('pages') ? ' is-invalid' : ''), 'placeholder' => 'Nro Paginas', 'autocomplete'=>'off']) }}
             {!! $errors->first('pages', '<div class="invalid-feedback">:message</p>') !!}
 
             <br>
             {{ Form::label('Docente') }}
-            {{ Form::text('professor', $note->professor, ['class' => 'form-control' . ($errors->has('professor') ? ' is-invalid' : 'professor'), 'placeholder' => 'Docente']) }}
+            {{ Form::text('professor', $note->professor, ['class' => 'form-control' . ($errors->has('professor') ? ' is-invalid' : ''), 'placeholder' => 'Docente', 'autocomplete'=>'off']) }}
             {!! $errors->first('professor', '<div class="invalid-feedback">:message</p>') !!}
 
             <br>

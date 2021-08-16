@@ -3,12 +3,11 @@
 
         <div class="form-group">
             {{ Form::label('Nombre') }}
-            {{ Form::text('name', $category->name, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' :
-            ''), 'placeholder' => 'Nombre']) }}
+            {{ Form::text('name', $category->name, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' :''), 'placeholder' => 'Nombre', 'autocomplete'=>'off']) }}
             {!! $errors->first('name', '<div class="invalid-feedback">:message</p>') !!}
 
                 <select class="form-select" aria-label="Default select example" name="superCategory">
-                    <option value="">NA</option>
+                    
                     @foreach($categories as $category)
                     <option value="{{$category->id}}">{{$category->name}}</option>
                     @endforeach

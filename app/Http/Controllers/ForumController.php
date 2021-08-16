@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Document;
 use App\Models\Comment;
 use App\Models\Log;
+use App\Models\User;
+use App\Models\Role;
 use Auth;
 use Image;
 
@@ -27,7 +29,9 @@ class ForumController extends Controller
         ->get();
         $categories=$this->getCategories();
         $document=Document::find($documentId);
-        return view('forum.index',compact('forums','categories','document'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('forum.index',compact('forums','categories','document','rol'));
     }
 
     /**
@@ -96,7 +100,9 @@ class ForumController extends Controller
             array_push($comments,$comment);
         }
         $categories=$this->getCategories();
-        return view('forum.show',compact('forum','categories','comments'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('forum.show',compact('forum','categories','comments','rol'));
     }
 
     /**

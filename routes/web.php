@@ -15,6 +15,8 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LogController;
+use App\Http\Controllers\PdfController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,6 +50,8 @@ Route::resource('categories',CategoryController::class);
 Route::resource('theses',ThesisController::class);
 Route::resource('notes',NoteController::class);
 Route::resource('books',BookController::class);
+Route::resource('logs',LogController::class);
+Route::resource('pdf',PdfController::class);
 Route::get('/documents/{id}/download',[App\Http\Controllers\DocumentController::class, 'download'])->name('documents.download');
 Route::get('/documents_like/{id}',[App\Http\Controllers\DocumentController::class, 'like'])->name('document.like');
 Route::get('/documents_disLike/{id}',[App\Http\Controllers\DocumentController::class, 'disLike'])->name('document.disLike');
@@ -82,5 +86,6 @@ Route::get('/configuraciones',[App\Http\Controllers\UserController::class,'confi
 Route::get('/password',[App\Http\Controllers\UserController::class,'password'])->name('user.password');
 Route::post('/password_guardar',[App\Http\Controllers\UserController::class,'passwordGuardar'])->name('user.passwordGuardar');
 Route::post('/configuraciones',[App\Http\Controllers\UserController::class,'configuracionesGuardar'])->name('user.update');
+
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

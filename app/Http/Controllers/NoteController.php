@@ -12,10 +12,12 @@ use App\Models\Author;
 use App\Models\AuthorsDocuments;
 use App\Models\Download;
 use App\Models\Log;
+use App\Models\Role;
 use Carbon\Carbon;
 use Exception;
 use DB;
 use Image;
+use Auth;
 
 class NoteController extends Controller
 {
@@ -31,7 +33,9 @@ class NoteController extends Controller
             ->join('subjects', 'notes.subjectId', '=', 'subjects.id')
             ->select('subjects.*','documents.*', 'notes.*')
             ->get();
-        return view('note.index',compact('notes'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('note.index',compact('notes','rol'));
     }
 
     /**
@@ -47,7 +51,9 @@ class NoteController extends Controller
         $managements = Management::all();
         $categories = Category::where('superCategory','2')->get();
         $authors = Author::all();
-        return view('note.create',compact('note','document','subjects','managements','categories','authors'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('note.create',compact('note','document','subjects','managements','categories','authors','rol'));
     }
 
     /**
@@ -66,7 +72,7 @@ class NoteController extends Controller
         $document->coverPage="/imagenes/documents/perrito.jpg";
         $document->uploadDate=Carbon::now();
         $document->downloadCounter=0;
-        $document->type="L";
+        $document->type="A";
         $document->counterLikes=0;
         $document->counterDislikes=0;
         $document->description=$request['description'];
@@ -102,6 +108,7 @@ class NoteController extends Controller
             $authorsDocuments->documentId=$document->id;
             $authorsDocuments->save();
         }
+        Log::guardar($note->id,'Añadio un Apunte');
         return $this->index();
     }
 
@@ -123,7 +130,9 @@ class NoteController extends Controller
             join('authors_documents', 'authors_documents.authorId', '=', 'authors.id')
             ->where('authors_documents.documentId',$note->documentId)
             ->get();
-        return view('note.show',compact('note','authors'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('note.show',compact('note','authors','rol'));
     }
 
     /**
@@ -139,7 +148,9 @@ class NoteController extends Controller
         $subjects = Subject::all();
         $managements = Management::all();
         $categories = Category::where('superCategory','2')->get();
-        return view('note.edit',compact('note','document','subjects','managements','categories'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('note.edit',compact('note','document','subjects','managements','categories','rol'));
     }
 
     /**

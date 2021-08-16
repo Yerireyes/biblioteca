@@ -3,8 +3,8 @@
         
         <div class="form-group">
             {{ Form::label('Nombre') }}
-            {{ Form::text('name', $editorial->name, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''), 'placeholder' => 'Nombre', 'autocomplete'=>'off']) }}
-            {!! $errors->first('name', '<div class="invalid-feedback">:message</p>') !!}
+            {{ Form::text('languageName', $language->languageName, ['class' => 'form-control' . ($errors->has('languageName') ? ' is-invalid' : ''), 'placeholder' => 'Nombre']) }}
+            {!! $errors->first('languageName', '<div class="invalid-feedback">:message</p>') !!}
         </div>
 
     </div>

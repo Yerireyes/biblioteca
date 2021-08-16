@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Author;
 use App\Models\AuthorsDocuments;
 use App\Models\Log;
+use App\Models\Role;
 use Illuminate\Http\Request;
-
+use Auth;
 
 class AuthorController extends Controller
 {
@@ -18,8 +19,9 @@ class AuthorController extends Controller
     public function index()
     {
         $authors = Author::paginate();
-
-        return view('author.index', compact('authors'))
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('author.index', compact('authors','rol'))
             ->with('i', (request()->input('page', 1) - 1) * $authors->perPage());
     }
 
@@ -31,7 +33,9 @@ class AuthorController extends Controller
     public function create()
     {
         $author = new Author();
-        return view('author.create', compact('author'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('author.create', compact('author','rol'));
     }
 
     /**
@@ -42,8 +46,8 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Author::$rules);
         $author = new Author();
+        request()->validate(Author::$rules);
         $author->name=$request['name'];
         $author->lastName=$request['lastName'];
         $author->save();
@@ -63,8 +67,9 @@ class AuthorController extends Controller
     public function show($id)
     {
         $author = Author::find($id);
-
-        return view('author.show', compact('author'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('author.show', compact('author','rol'));
     }
 
     /**
@@ -76,8 +81,9 @@ class AuthorController extends Controller
     public function edit($id)
     {
         $author = Author::find($id);
-
-        return view('author.edit', compact('author'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('author.edit', compact('author','rol'));
     }
 
     /**

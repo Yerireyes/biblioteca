@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Usuario
+    Rol
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('User') }}
+                                {{ __('Rol') }}
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('pdf.index') }}" class="btn btn-sm btn-success float-right"  data-placement="left">
-                                  {{ __('Generar Reporte') }}
+                                <a href="{{ route('roles.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                  {{ __('Create New') }}
                                 </a>
                               </div>
                         </div>
@@ -28,7 +28,7 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-
+                
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
@@ -37,30 +37,24 @@
                                         <th>No</th>
                                         
 										<th>Nombre</th>
-										<th>Username</th>
-										<th>Correo</th>
-										<th>Rol</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
+                                    @foreach ($roles as $rols)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-											<td>{{ $user->fullName }}</td>
-											<td>{{ $user->username }}</td>
-											<td>{{ $user->email }}</td>
-											<td>{{ $user->nombreRol($user->roleid) }}</td>
+											<td>{{ $rols->roleName }}</td>
 
                                             <td>
-                                                <form action="{{ route('users.destroy',$user->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('users.show',$user->id) }}"><i class="fa fa-fw fa-eye"></i> Mostrar</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('users.edit',$user->id) }}"><i class="fa fa-fw fa-edit"></i> Cambiar Rol</a>
+                                                <form action="{{ route('roles.destroy',$rols->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('roles.show',$rols->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('roles.edit',$rols->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -70,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $users->links() !!}
+                {!! $roles->links() !!}
             </div>
         </div>
     </div>

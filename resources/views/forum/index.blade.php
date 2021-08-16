@@ -12,13 +12,14 @@
                         <span id="card_title">
                             <h3>{{$document->title}}</h3>
                         </span>
-
+                        @if(str_contains($rol->accion,'CrearForo'))
                         <div class="float-right">
                             <a href="{{ route('forums.create',$document->id) }}" class="btn btn-primary btn-sm float-right"
                                 data-placement="left">
                                 {{ __('Crear Nuevo') }}
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div>
                 

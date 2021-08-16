@@ -21,8 +21,10 @@
 
                             <p style="height: 10rem;" class="card-text overflow-auto">{{$book->description}}
                             </p>
+                            @if(str_contains($rol->accion,'DescargarDocumento'))
                             <a class="btn btn-sm btn-primary"
                                 href="{{route('documents.download',$book->documentId)}}">descargar</a>
+                            @endif
                             <a class="btn btn-primary btn-sm" href="{{route('forums.index',$book->documentId)}}">ver
                                 Foros</a>
                             <br>

@@ -19,7 +19,7 @@
                     </small>
                 </div>
             </div>
-            @if(Auth::id()==$forum->userId || Auth::user()->roleid==1)
+            @if(Auth::id()==$forum->userId || Auth::user()->roleid==1 || str_contains($rol->accion,'EditarForo'))
             <div class="col-1">
                 <div class="dropdown">
                     <button class="btn btn-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
@@ -32,11 +32,13 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="{{route('forums.edit',$forum->id)}}">Editar</a></li>
+                        @if(str_contains($rol->accion,'EliminarForo') || Auth::user()->roleid==1)
                         <form action="{{route('forums.delete',$forum->id)}}" method="post">
                             @csrf
                             @method('DELETE')
                             <li><input type="submit" class="dropdown-item" value="Eliminar" /></li>
                         </form>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -53,6 +55,7 @@
         </div>
     </div>
     <div class="row m-3">
+        @if(str_contains($rol->accion,'CrearComentario'))
         <div class="container border border-muted m-3 py-3">
             <div class="row">
                 <div class="col-1" style="height:2.8rem;">
@@ -80,6 +83,7 @@
 
             </div>
         </div>
+        @endif
         @foreach($comments as $comment)
 
         <div class="container border border-muted m-3 py-3">
@@ -100,7 +104,7 @@
                     </div>
 
                 </div>
-                @if(Auth::id()==$comment['userId'] || Auth::user()->roleid==1)
+                @if(Auth::id()==$comment['userId'] || Auth::user()->roleid==1 || str_contains($rol->accion,'EditarComentario'))
                 <div class="col-1">
                     <div class="dropdown">
                         <button class="btn btn-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
@@ -115,11 +119,13 @@
                             <li><button data-bs-toggle="collapse" data-bs-target=".multi-collapse"
                                     aria-controls="multiCollapseExample1 multiCollapseExample2"
                                     class="dropdown-item">Editar</button></li>
+                            @if(str_contains($rol->accion,'EditarComentario') || Auth::user()->roleid==1)
                             <form action="{{route('comments.delete',$comment['id'])}}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <li><input type="submit" class="dropdown-item" value="Eliminar" /></li>
                             </form>
+                            @endif
                         </ul>
                     </div>
 
@@ -149,6 +155,7 @@
                     <div class="row"><a data-bs-toggle="collapse" href="#subComentarios{{$comment['id']}}">Ver mas</a></div>
                 </div>
                 <div class="collapse col-11" id="subComentarios{{$comment['id']}}">
+                @if(str_contains($rol->accion,'CrearComentario'))
                 <div class="container py-3 border border-muted ml-5 my-2">
                     <div class="row">
                         <div style="width: 2.5rem; height: 2.5rem;" class="mx-3">
@@ -177,6 +184,7 @@
         
                     </div>
                 </div>
+                @endif
 
                 @foreach($comment['subComments'] as $subComment)
                 <div class="container py-3 border border-muted ml-5 my-2">
