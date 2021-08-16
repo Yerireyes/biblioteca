@@ -82,10 +82,15 @@ Route::post('/forum',[App\Http\Controllers\ForumController::class, 'store'])->na
 Route::put('/forum/{id}',[App\Http\Controllers\ForumController::class, 'update'])->name('forums.update');
 Route::post('/comment',[App\Http\Controllers\ForumController::class, 'commentStore'])->name('comments.create');
 Route::get('/profile/{id}',[App\Http\Controllers\UserController::class,'editProfile'])->name('user.profile');
+Route::get('/profile2/{id}',[App\Http\Controllers\UserController::class,'editProfile2'])->name('user.profile2');
 Route::get('/configuraciones',[App\Http\Controllers\UserController::class,'configuraciones'])->name('user.configurations');
+Route::get('/configuraciones2',[App\Http\Controllers\UserController::class,'configuraciones2'])->name('user.configurations2');
 Route::get('/password',[App\Http\Controllers\UserController::class,'password'])->name('user.password');
+Route::get('/password2',[App\Http\Controllers\UserController::class,'password2'])->name('user.password2');
 Route::post('/password_guardar',[App\Http\Controllers\UserController::class,'passwordGuardar'])->name('user.passwordGuardar');
+Route::post('/password_guardar2',[App\Http\Controllers\UserController::class,'passwordGuardar2'])->name('user.passwordGuardar2');
 Route::post('/configuraciones',[App\Http\Controllers\UserController::class,'configuracionesGuardar'])->name('user.update');
+Route::post('/configuraciones2',[App\Http\Controllers\UserController::class,'configuracionesGuardar2'])->name('user.update2');
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

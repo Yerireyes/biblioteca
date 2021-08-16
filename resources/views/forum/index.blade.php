@@ -1,7 +1,11 @@
 @extends('home2')
 
 @section('content')
+@if(isset($forums[0]->id))
 <a href="{{route('books.user',[$forums[0]->getCategory($forums[0]->documentId),$forums[0]->getSuperCategory($forums[0]->documentId)])}}" class="btn btn-outline-secondary ml-3">volver</a>
+@else
+<a href="{{ url()->previous() }}" class="btn btn-outline-secondary ml-3">volver</a>
+@endif
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">

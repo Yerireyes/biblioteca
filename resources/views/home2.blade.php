@@ -57,8 +57,8 @@
                 @endif
                 @else
                 <li class="nav-item dropdown text-white">
-                    <a id="navbarDropdown" class="nav-link text-white" color=whitehref="#" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="nav-link text-white" color=white href="/profile2/{{Auth::id()}}" role="button"
+                        data-toggle="" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->username }}
                     </a>
                 <li class="nav-item active">
@@ -78,10 +78,12 @@
     <div class="wrapper fixed-left">
         @guest
         @else
+        @if('user.profile2'!=Route::currentRouteName() && 'user.configurations2'!=Route::currentRouteName() && 'user.password2'!=Route::currentRouteName())
         <nav id="sidebar" class="bg-white border border-dark">
 
 
             <ul class="list-unstyled components">
+            
                 @foreach($categories as $category)
                 <li>
                     <a data-bs-toggle="collapse" href="#category-{{$category['id']}}">{{$category['name']}}</a>
@@ -117,8 +119,10 @@
                     </div>
                 </div>
                 @endforeach
+            
             </ul>
         </nav>
+        @endif
         @endguest
         <div id="content">
             <main class="py-4">

@@ -57,7 +57,7 @@
                 @else
                 <li class="nav-item dropdown text-white">
                     <a id="navbarDropdown" class="nav-link text-white" color="white" href="/profile/{{Auth::id()}}" role="button"
-                        aria-haspopup="true" aria-expanded="false" v-pre>
+                        data-toggle="" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->username }}
                     </a>
                 <li class="nav-item active">

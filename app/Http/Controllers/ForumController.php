@@ -27,6 +27,9 @@ class ForumController extends Controller
         ->select('forums.*','users.username','users.id as userId','users.profilePicture')
         ->orderBy('created_at','desc')
         ->get();
+        if ($forums==null) {
+            $forums="hola";
+        }
         $categories=$this->getCategories();
         $document=Document::find($documentId);
         $user=Auth::user();

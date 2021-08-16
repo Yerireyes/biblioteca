@@ -1,6 +1,7 @@
 @extends('home2')
 
 @section('content')
+
 <a href="{{route('forums.index',$forum->documentId)}}" class="btn btn-outline-secondary">volver</a>
 <div class="card">
     <div class="card-body">

@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('home2')
 @section('content')
 <div class="float-right">
-    <a href="/home" class="btn btn-primary float-right"  data-placement="left">
+    <a href="/home2" class="btn btn-primary float-right"  data-placement="left">
      {{ __('Volver Atras') }}
     </a>
  </div>
@@ -20,10 +20,10 @@
         <div class="position-absolute align-self-end row w-100">
             <div class="col-8 ml-auto">
                 @if($user->id==Auth::user()->id)
-                <a href="{{route('user.configurations')}}" class="btn btn-primary">
+                <a href="{{route('user.configurations2')}}" class="btn btn-primary">
                     Editar perfil
                 </a>
-                <a href="{{route('user.password')}}" class="btn btn-primary">
+                <a href="{{route('user.password2')}}" class="btn btn-primary">
                     Cambiar Contraseña
                 </a>
                 @endif

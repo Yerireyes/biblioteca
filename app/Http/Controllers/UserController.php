@@ -132,10 +132,20 @@ class UserController extends Controller
         
         return view('user.profile',compact('user'));
     }
+    public function editProfile2($id){
+        $user=User::find($id);
+        
+        return view('user.profile2',compact('user'));
+    }
 
     public function configuraciones(){
         $user=Auth::user();
         return view('user.config',compact('user'));
+    }
+    
+    public function configuraciones2(){
+        $user=Auth::user();
+        return view('user.config2',compact('user'));
     }
 
     public function configuracionesGuardar(Request $request){
@@ -153,9 +163,27 @@ class UserController extends Controller
         $user->save();
         return redirect()->route('user.profile',Auth::id());
     }
+    public function configuracionesGuardar2(Request $request){
+        $user=User::find(Auth::id());
+        $user->fullName=$request['fullName'];
+        $user->username=$request['username'];
+        $user->email=$request['email'];
+        if($request->hasFile('profilePicture')){
+            $profilePicture=$request->profilePicture;
+            $image=Image::make($profilePicture);
+            $image->resize(300,300);
+            $image->save(public_path()."/imagenes/users/$user->id.jpg");
+            $user->profilePicture="/imagenes/users/$user->id.jpg";
+        }
+        $user->save();
+        return redirect()->route('user.profile2',Auth::id());
+    }
 
     public function password(){
         return view('user.password');
+    }
+    public function password2(){
+        return view('user.password2');
     }
 
     public function passwordGuardar(Request $request){
@@ -176,5 +204,24 @@ class UserController extends Controller
             return redirect()->back()->with('errors','Contraseña Incorrecta');
         }
         return redirect()->route('user.profile',Auth::id());
+    }
+    public function passwordGuardar2(Request $request){
+        $request['email']=Auth::user()->email;
+        $request->validate([
+            'oldpassword' => ['required','confirmed','min:8']
+        ]);
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+           $user=User::find(Auth::id());
+           $user->password=bcrypt($request['oldpassword']);
+           $user->save();
+        }else {
+            return redirect()->back()->with('errors','Contraseña Incorrecta');
+        }
+        return redirect()->route('user.profile2',Auth::id());
     }
 }
