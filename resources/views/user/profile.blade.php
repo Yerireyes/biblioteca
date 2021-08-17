@@ -64,14 +64,14 @@
                     </div>
                 </div>
                 <div class="row my-3">
-                    <div class="col-4 text-right">
+                    <!-- <div class="col-4 text-right">
                         <strong>
                             Se unió:
                         </strong>
-                    </div>
-                    <div class="col text-left">
+                    </div> -->
+                    <!-- <div class="col text-left">
                         {{$user->created_at->diffForHumans()}}
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

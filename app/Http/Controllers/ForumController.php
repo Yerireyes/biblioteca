@@ -46,7 +46,9 @@ class ForumController extends Controller
     {
         $forum=new Forum();
         $categories=$this->getCategories();
-        return view('forum.create',compact('forum','categories','documentId'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('forum.create',compact('forum','categories','documentId','rol'));
     }
 
     /**
@@ -119,7 +121,9 @@ class ForumController extends Controller
         $forum=Forum::find($id);
         $documentId=$forum->documentId;
         $categories=$this->getCategories();
-        return view('forum.edit',compact('forum','documentId','categories'));
+        $user=Auth::user();
+        $rol=Role::find($user->roleid);
+        return view('forum.edit',compact('forum','documentId','categories','rol'));
     }
 
     /**
@@ -148,11 +152,22 @@ class ForumController extends Controller
     public function destroy($id)
     {
         $forum=Forum::find($id);
-        $comments=Comment::where('forumId',$forum->id)->delete();
+        $comments=Comment::where('forumId',$forum->id);
         $documentId=$forum->documentId;
+        foreach ($comments as $comment) {
+            $comment::whereNotNull('superCommentId')
+            ->delete();
+        }
+        $comments->delete();
         $forum->delete();
         Log::guardar($id,'Elimino un Foro');
         return $this->index($documentId);
+    }
+
+    public function comentarios($id)
+    {
+        Comment::where('superCommentId',$id)->delete();
+        Comment::find($id)->delete();
     }
 
     public function getCategories(){
