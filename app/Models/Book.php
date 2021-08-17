@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use App\Models\Like;
+use App\Models\Document;
 class Book extends Model
 {
 
@@ -41,4 +42,14 @@ class Book extends Model
         }
         return false;
       }
+
+      public function cantidadMeGusta($documentId)
+    {
+        return Document::find($documentId)->counterLikes;
+    }
+
+    public function cantidadNoMeGusta($documentId)
+    {
+        return Document::find($documentId)->counterDislikes;
+    }
 }

@@ -41,6 +41,7 @@
                                             <img src="https://img.icons8.com/ios/35/000000/thumb-up--v1.png" />
                                         </a>
                                         @endif
+                                        <h6>{{$book->cantidadMeGusta($book->documentId)}}</h6>
                                     </div>
                                     <div class="p-0 float-right">
                                         @if($book->noMeGusta($book->documentId))
@@ -52,6 +53,7 @@
                                             <img src="https://img.icons8.com/ios/35/000000/thumbs-down.png" />
                                         </a>
                                         @endif
+                                        <h6>{{$book->cantidadNoMeGusta($book->documentId)}}</h6>
                                     </div>
                                 </div>
                             </div>

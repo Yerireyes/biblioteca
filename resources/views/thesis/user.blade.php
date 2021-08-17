@@ -19,8 +19,43 @@
                         <br>
                         <p class="card-text">{{$thesis->description}}
                         </p>
-                            <a class="btn btn-primary" href="{{route('documents.download',$thesis->documentId)}}">descargar</a>
-                            <a class="btn btn-primary" href="{{route('forums.index',$thesis->documentId)}}">ver Foros</a>
+                        @if(str_contains($rol->accion,'DescargarDocumento'))
+                            <a class="btn btn-sm btn-primary"
+                                href="{{route('documents.download',$thesis->documentId)}}">descargar</a>
+                            @endif
+                            <a class="btn btn-primary btn-sm" href="{{route('forums.index',$thesis->documentId)}}">ver
+                                Foros</a>
+                            <br>
+                            <div class="container mt-3 p-0">
+                                <div class="row justify-content-between">
+                                    <div class="col p-0">
+                                        
+                                        @if($thesis->meGusta($thesis->documentId))
+                                        <a href="{{route('document.deleteLike',$thesis->documentId)}}">
+                                            <img src="https://img.icons8.com/ios-filled/35/000000/thumb-up--v1.png" />
+                                        </a>
+                                        @else
+                                        <a href="{{route('document.like',$thesis->documentId)}}">
+
+                                            <img src="https://img.icons8.com/ios/35/000000/thumb-up--v1.png" />
+                                        </a>
+                                        @endif
+                                        <h6>{{$thesis->cantidadMeGusta($thesis->documentId)}}</h6>
+                                    </div>
+                                    <div class="p-0 float-right">
+                                        @if($thesis->noMeGusta($thesis->documentId))
+                                        <a href="{{route('document.deleteDislike',$thesis->documentId)}}">
+                                            <img src="https://img.icons8.com/ios-filled/35/000000/thumbs-down.png"/>
+                                        </a>
+                                        @else
+                                        <a href="{{route('document.disLike',$thesis->documentId)}}">
+                                            <img src="https://img.icons8.com/ios/35/000000/thumbs-down.png" />
+                                        </a>
+                                        @endif
+                                        <h6>{{$thesis->cantidadNoMeGusta($thesis->documentId)}}</h6>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 @endforeach

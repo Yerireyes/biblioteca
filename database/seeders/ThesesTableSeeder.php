@@ -30,7 +30,7 @@ class ThesesTableSeeder extends Seeder
         $document->counterDislikes=0;
         $document->pages=64;
         $document->mydocument="/storage/documents/default.pdf";
-        $document->categoryId=1;
+        $document->categoryId=18;
         $document->save();
         $thesis = new Thesis();
         $thesis->defenseDate=carbon::now();
@@ -54,7 +54,7 @@ class ThesesTableSeeder extends Seeder
         $document->counterDislikes=0;
         $document->pages=50;
         $document->mydocument="/storage/documents/default.pdf";
-        $document->categoryId=1;
+        $document->categoryId=18;
         $document->save();
         $thesis = new Thesis();
         $thesis->defenseDate=carbon::now();
