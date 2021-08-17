@@ -56,6 +56,15 @@
                 </li>
                 @endif
                 @else
+                @if('user.profile2'!=Route::currentRouteName() && 'user.configurations2'!=Route::currentRouteName() && 'user.password2'!=Route::currentRouteName())
+                @if(str_contains($rol->accion,'Usuarios') || str_contains($rol->accion,'Roles') || str_contains($rol->accion,'Libros') || str_contains($rol->accion,'Apuntes') ||
+                str_contains($rol->accion,'Tesis') || str_contains($rol->accion,'Editoriales') || str_contains($rol->accion,'Autores') || str_contains($rol->accion,'Idiomas') ||
+                str_contains($rol->accion,'Gestiones') || str_contains($rol->accion,'Materias') || str_contains($rol->accion,'Bitacora') || str_contains($rol->accion,'Categorias'))
+                <div class="mt-1 p-0">
+                    <a type="submit" href="/home" class="btn btn-sm btn-primary"> Administrador</a>
+                </div>
+                @endif
+                @endif
                 <li class="nav-item dropdown text-white">
                     <a id="navbarDropdown" class="nav-link text-white" color=white href="/profile2/{{Auth::id()}}" role="button"
                         data-toggle="" aria-haspopup="true" aria-expanded="false" v-pre>

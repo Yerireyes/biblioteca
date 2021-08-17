@@ -134,8 +134,7 @@ class UserController extends Controller
     }
     public function editProfile2($id){
         $user=User::find($id);
-        
-        return view('user.profile2',compact('user'));
+        return view('user.profile2',compact('user',));
     }
 
     public function configuraciones(){

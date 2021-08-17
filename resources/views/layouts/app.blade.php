@@ -55,6 +55,9 @@
                 </li>
                 @endif
                 @else
+                <div class="mt-1 p-0">
+                    <a type="submit" href="/home2" class="btn btn-sm btn-primary"> Ir a la Biblioteca</a>
+                </div>
                 <li class="nav-item dropdown text-white">
                     <a id="navbarDropdown" class="nav-link text-white" color="white" href="/profile/{{Auth::id()}}" role="button"
                         data-toggle="" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -66,6 +69,7 @@
                         <i class="fas fa-sign-out-alt"></i>
                         LogOut<span class="sr-only">(current) </span></a>
                 </li>
+                
 
                 </li>
                 @endguest
