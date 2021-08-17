@@ -58,6 +58,7 @@
 											<td>{{ $author->lastName }}</td>
 
                                             <td>
+                                                <div class="float-right">
                                                 <form action="{{ route('authors.destroy',$author->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="{{ route('authors.show',$author->id) }}"><i class="fa fa-fw fa-eye"></i> Mostrar</a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('authors.edit',$author->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
@@ -65,6 +66,10 @@
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
                                                 </form>
+                                                <form method="GET" action="{{ route('pdf.storeAuthor',$author->id) }}" enctype="multipart/form-data">
+                                                    <button type="submit" class="btn btn-sm btn-success "><i class="fa fa-fw fa-edit"></i> Generar Reporte</button>
+                                                </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

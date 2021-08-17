@@ -20,6 +20,12 @@
                                 <a href="{{ route('notes.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Crear Nuevo') }}
                                 </a>
+                                <a href="{{ route('pdf.noteCatalogue') }}" class="btn btn-sm btn-success float-right border-white"  data-placement="left">
+                                  {{ __('Generar Catalogo') }}
+                                </a>
+                                <a href="{{ route('pdf.notePopular') }}" class="btn btn-sm btn-success float-right border-white"  data-placement="left">
+                                  {{ __('Generar Popular') }}
+                                </a>
                               </div>
                         </div>
                     </div>

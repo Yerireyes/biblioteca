@@ -93,4 +93,27 @@ Route::post('/configuraciones',[App\Http\Controllers\UserController::class,'conf
 Route::post('/configuraciones2',[App\Http\Controllers\UserController::class,'configuracionesGuardar2'])->name('user.update2');
 
 
+
+
+//reportes
+Route::get('/pdfLog', [App\Http\Controllers\PdfController::class, 'indexLog'])->name('pdf.log');
+Route::get('/pdfBookPopular', [App\Http\Controllers\PdfController::class, 'indexBookCatalogue'])->name('pdf.bookCatalogue');
+Route::get('/pdfBookCatalogue', [App\Http\Controllers\PdfController::class, 'indexBookPopular'])->name('pdf.bookPopular');
+Route::get('/pdfThesisPopular', [App\Http\Controllers\PdfController::class, 'indexThesisCatalogue'])->name('pdf.thesisCatalogue');
+Route::get('/pdfThesisCatalogue', [App\Http\Controllers\PdfController::class, 'indexThesisPopular'])->name('pdf.thesisPopular');
+Route::get('/pdfNotePopular', [App\Http\Controllers\PdfController::class, 'indexNoteCatalogue'])->name('pdf.noteCatalogue');
+Route::get('/pdfNoteCatalogue', [App\Http\Controllers\PdfController::class, 'indexNotePopular'])->name('pdf.notePopular');
+Route::post('/pdfLogCreate', [App\Http\Controllers\PdfController::class, 'storeLog'])->name('pdf.storeLog');
+Route::post('/pdfBookCatalogueCreate', [App\Http\Controllers\PdfController::class, 'storeBookCatalogue'])->name('pdf.storeBookCatalogue');
+Route::post('/pdfBookPopularCreate', [App\Http\Controllers\PdfController::class, 'storeBookPopular'])->name('pdf.storeBookPopular');
+Route::post('/pdfThesisCatalogueCreate', [App\Http\Controllers\PdfController::class, 'storeThesisCatalogue'])->name('pdf.storeThesisCatalogue');
+Route::post('/pdfThesisPopularCreate', [App\Http\Controllers\PdfController::class, 'storeThesisPopular'])->name('pdf.storeThesisPopular');
+Route::post('/pdfNoteCatalogueCreate', [App\Http\Controllers\PdfController::class, 'storeNoteCatalogue'])->name('pdf.storeNoteCatalogue');
+Route::post('/pdfNotePopularCreate', [App\Http\Controllers\PdfController::class, 'storeNotePopular'])->name('pdf.storeNotePopular');
+Route::get('/pdfRolCreate{id}', [App\Http\Controllers\PdfController::class, 'storeRol'])->name('pdf.storeRol');
+Route::get('/pdfEditorialCreate{id}', [App\Http\Controllers\PdfController::class, 'storeEditorial'])->name('pdf.storeEditorial');
+Route::get('/pdfAuthorCreate{id}', [App\Http\Controllers\PdfController::class, 'storeAuthor'])->name('pdf.storeAuthor');
+Route::get('/pdfLanguageCreate{id}', [App\Http\Controllers\PdfController::class, 'storeLanguage'])->name('pdf.storeLanguage');
+Route::get('/pdfManagementCreate{id}', [App\Http\Controllers\PdfController::class, 'storeManagement'])->name('pdf.storeManagement');
+Route::get('/pdfSubjectCreate{id}', [App\Http\Controllers\PdfController::class, 'storeSubject'])->name('pdf.storeSubject');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

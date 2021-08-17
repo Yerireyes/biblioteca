@@ -49,6 +49,7 @@
 											<td>{{ $management->name }}</td>
 
                                             <td>
+                                                <div class="float-right">
                                                 <form class="justify-content-end" action="{{ route('managements.destroy',$management->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="{{ route('managements.show',$management->id) }}"><i class="fa fa-fw fa-eye"></i> Mostrar</a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('managements.edit',$management->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
@@ -56,6 +57,10 @@
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
                                                 </form>
+                                                <form method="GET" action="{{ route('pdf.storeManagement',$management->id) }}" enctype="multipart/form-data">
+                                                    <button type="submit" class="btn btn-sm btn-success "><i class="fa fa-fw fa-edit"></i> Generar Reporte</button>
+                                                </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

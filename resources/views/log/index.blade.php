@@ -15,6 +15,12 @@
                             <span id="card_title">
                                 {{ __('Bitacora') }}
                             </span>
+
+                            <div class="float-right">
+                                <a href="{{ route('pdf.log') }}" class="btn btn-sm btn-success float-right"  data-placement="left">
+                                  {{ __('Generar Reporte') }}
+                                </a>
+                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))

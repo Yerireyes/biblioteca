@@ -20,6 +20,12 @@
                                 <a href="{{ route('books.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Crear Nuevo') }}
                                 </a>
+                                <a href="{{ route('pdf.bookCatalogue') }}" class="btn btn-sm btn-success float-right border-white"  data-placement="left">
+                                  {{ __('Generar Catalogo') }}
+                                </a>
+                                <a href="{{ route('pdf.bookPopular') }}" class="btn btn-sm btn-success float-right border-white"  data-placement="left">
+                                  {{ __('Generar Popular') }}
+                                </a>
                               </div>
                         </div>
                     </div>
